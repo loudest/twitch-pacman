@@ -12,7 +12,7 @@ def connect():
    readbuffer = ""
    irc=socket.socket( )
    irc.connect((HOST, PORT))
-   irc.send("PASS oauth:4vbd0oj5s68rfexwvkywzhicp6zyaal")
+   irc.send("PASS oauth:4vbd0oj5s68rfexwvkywzhicp6zyaal\r\n")
    irc.send("NICK %s\r\n" % NICK)
    irc.send("USER %s %s :%s\r\n" % (IDENT, IDENT, REALNAME))
    irc.send("JOIN %s\r\n" % (CHANNEL))
