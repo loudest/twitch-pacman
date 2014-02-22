@@ -3,9 +3,10 @@ from threading import Thread
 
 class twitch_bot(Thread):
 
-   def __init__(self):
+   def __init__(self, game):
       Thread.__init__(self)
       self.running = True
+      self.game = game
 
    def connect(self):
 

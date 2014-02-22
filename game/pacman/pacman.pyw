@@ -68,16 +68,6 @@ ghostcolor[3] = (255, 128, 0, 255)
 ghostcolor[4] = (50, 50, 255, 255) # blue, vulnerable ghost
 ghostcolor[5] = (255, 255, 255, 255) # white, flashing ghost
 
-# start a new thread to get something
-if(SERVER_MODE == True):
-    
-    rthreads = []
-    threads = 1
-    for i in range(threads):
-        t = twitch_bot()
-        rthreads.append(t)
-        t.start()
-
 #      ___________________
 # ___/  class definitions  \_______________________________________________
 
@@ -1466,6 +1456,18 @@ tileIDImage = {} # gives tile image (when the ID# is known)
 thisGame = game()
 thisLevel = level()
 thisLevel.LoadLevel( thisGame.GetLevelNum() )
+
+# start a new thread to get something
+if(SERVER_MODE == True):
+    
+    rthreads = []
+    threads = 1
+    for i in range(threads):
+        t = twitch_bot(thisGame)
+        rthreads.append(t)
+        t.start()
+
+thisGame.StartNewGame()
 
 print thisGame.screenSize
 window = pygame.display.set_mode( thisGame.screenSize, pygame.DOUBLEBUF | pygame.HWSURFACE )
