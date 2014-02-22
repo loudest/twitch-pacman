@@ -1,4 +1,4 @@
-import sys, socket, string
+import sys, socket, string, random
 from threading import Thread
 
 class twitch_bot(Thread):
