@@ -19,7 +19,7 @@ import twitch_bot
 from twitch_bot import twitch_bot
 
 # Whether or not to connect to IRC
-SERVER_MODE=False
+SERVER_MODE=True
 
 
 # WIN???

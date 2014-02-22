@@ -28,7 +28,7 @@ class twitch_bot(Thread):
       irc.send("JOIN %s\r\n" % (CHANNEL))
 
       while True: 
-         data = irc.recv(4096)
+         data = irc.recv(1024)
          if data.find('PING') != -1:
             irc.send('PONG '+data.split()[ 1 ]+'\r\n')
 
