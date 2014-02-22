@@ -505,6 +505,8 @@ class ghost ():
         self.velX = 0
         self.velY = 0
         self.speed = 1
+        # True always for now - once the ghost is controllable, should only change with new inputs
+        self.pendingMove = True
         
         self.nearestRow = 0
         self.nearestCol = 0
@@ -789,6 +791,7 @@ class pacman ():
         self.velX = 0
         self.velY = 0
         self.speed = 2
+        self.pendingMove = False
         
         self.nearestRow = 0
         self.nearestCol = 0
@@ -901,7 +904,10 @@ class pacman ():
             
         if thisGame.fruitScoreTimer > 0:
             thisGame.fruitScoreTimer -= 1
-            
+
+        # Move Complete!
+        self.pendingMove = False
+
         
     def Draw (self):
         
@@ -1329,33 +1335,31 @@ def CheckIfCloseButton(events):
         if event.type == QUIT: 
             sys.exit(0)
 
-def CheckInputs(externalInput = None):
-    keyPressed = False
-    
+def CheckInputs(character, externalInput = None):
     if thisGame.mode == 1:
         if (externalInput is not None and externalInput == "d") or pygame.key.get_pressed()[ pygame.K_RIGHT ] or (js!=None and js.get_axis(JS_XAXIS)>0):
-            keyPressed = True
-            if not thisLevel.CheckIfHitWall((player.x + player.speed, player.y), (player.nearestRow, player.nearestCol)): 
-                player.velX = player.speed
-                player.velY = 0
+            if not thisLevel.CheckIfHitWall((character.x + character.speed, character.y), (character.nearestRow, character.nearestCol)): 
+                character.velX = character.speed
+                character.velY = 0
+                character.pendingMove = True
                 
         elif (externalInput is not None and externalInput == "a") or pygame.key.get_pressed()[ pygame.K_LEFT ] or (js!=None and js.get_axis(JS_XAXIS)<0):
-            keyPressed = True
-            if not thisLevel.CheckIfHitWall((player.x - player.speed, player.y), (player.nearestRow, player.nearestCol)): 
-                player.velX = -player.speed
-                player.velY = 0
+            if not thisLevel.CheckIfHitWall((character.x - character.speed, character.y), (character.nearestRow, character.nearestCol)): 
+                character.velX = -character.speed
+                character.velY = 0
+                character.pendingMove = True
             
         elif (externalInput is not None and externalInput == "s") or pygame.key.get_pressed()[ pygame.K_DOWN ] or (js!=None and js.get_axis(JS_YAXIS)>0):
-            keyPressed = True
-            if not thisLevel.CheckIfHitWall((player.x, player.y + player.speed), (player.nearestRow, player.nearestCol)): 
-                player.velX = 0
-                player.velY = player.speed
+            if not thisLevel.CheckIfHitWall((character.x, character.y + character.speed), (character.nearestRow, character.nearestCol)): 
+                character.velX = 0
+                character.velY = character.speed
+                character.pendingMove = True
             
         elif (externalInput is not None and externalInput == "w") or pygame.key.get_pressed()[ pygame.K_UP ] or (js!=None and js.get_axis(JS_YAXIS)<0):
-            keyPressed = True
-            if not thisLevel.CheckIfHitWall((player.x, player.y - player.speed), (player.nearestRow, player.nearestCol)):
-                player.velX = 0
-                player.velY = -player.speed
+            if not thisLevel.CheckIfHitWall((character.x, character.y - character.speed), (character.nearestRow, character.nearestCol)):
+                character.velX = 0
+                character.velY = -character.speed
+                character.pendingMove = True
                 
     if pygame.key.get_pressed()[ pygame.K_ESCAPE ]:
         sys.exit(0)
@@ -1363,8 +1367,6 @@ def CheckInputs(externalInput = None):
     elif thisGame.mode == 3:
         if pygame.key.get_pressed()[ pygame.K_RETURN ] or (js!=None and js.get_button(JS_STARTBUTTON)):
             thisGame.StartNewGame()
-    else:
-        return keyPressed      
 
     
 #      _____________________________________________
@@ -1485,10 +1487,10 @@ while True:
     
     if thisGame.mode == 1:
         # normal gameplay mode
-        validMoves = CheckInputs()
+        CheckInputs(player)
         
         thisGame.modeTimer += 1
-        if validMoves:
+        if player.pendingMove and ghosts[i].pendingMove:
             player.Move()
             for i in range(0, 4, 1):
                 ghosts[i].Move()
@@ -1511,7 +1513,7 @@ while True:
                 
     elif thisGame.mode == 3:
         # game over
-        CheckInputs()
+        CheckInputs(player)
             
     elif thisGame.mode == 4:
         # waiting to start
