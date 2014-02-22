@@ -18,7 +18,9 @@ from pygame.locals import *
 import twitch_bot
 from twitch_bot import twitch_bot
 
+# Whether or not to connect to IRC
 SERVER_MODE=False
+
 
 # WIN???
 SCRIPT_PATH=sys.path[0]
@@ -67,6 +69,12 @@ ghostcolor[2] = (128, 255, 255, 255)
 ghostcolor[3] = (255, 128, 0, 255)
 ghostcolor[4] = (50, 50, 255, 255) # blue, vulnerable ghost
 ghostcolor[5] = (255, 255, 255, 255) # white, flashing ghost
+
+def enum(**enums):
+    return type('Enum', (), enums)
+
+# Movement Directions
+Directions = enum(RIGHT=1, LEFT=2, UP=3, DOWN=4)
 
 #      ___________________
 # ___/  class definitions  \_______________________________________________
@@ -814,6 +822,31 @@ class pacman ():
             self.anim_pacmanS[i] = pygame.image.load(os.path.join(SCRIPT_PATH,"res","sprite","pacman.gif")).convert()
 
         self.pelletSndNum = 0
+
+    def queueMove (self, direction, currentLevel):
+        if (direction == Directions.RIGHT):
+            if not currentLevel.CheckIfHitWall((self.x + self.speed, self.y), (self.nearestRow, self.nearestCol)): 
+                self.velX = self.speed
+                self.velY = 0
+                self.pendingMove = True
+                
+        elif (direction == Directions.LEFT):
+            if not currentLevel.CheckIfHitWall((self.x - self.speed, self.y), (self.nearestRow, self.nearestCol)): 
+                self.velX = -self.speed
+                self.velY = 0
+                self.pendingMove = True
+            
+        elif (direction == Directions.DOWN):
+            if not currentLevel.CheckIfHitWall((self.x, self.y + self.speed), (self.nearestRow, self.nearestCol)): 
+                self.velX = 0
+                self.velY = self.speed
+                self.pendingMove = True
+            
+        elif (direction == Directions.UP):
+            if not currentLevel.CheckIfHitWall((self.x, self.y - self.speed), (self.nearestRow, self.nearestCol)):
+                self.velX = 0
+                self.velY = -self.speed
+                self.pendingMove = True
         
     def Move (self):
         
@@ -1338,28 +1371,16 @@ def CheckIfCloseButton(events):
 def CheckInputs(character, externalInput = None):
     if thisGame.mode == 1:
         if (externalInput is not None and externalInput == "d") or pygame.key.get_pressed()[ pygame.K_RIGHT ] or (js!=None and js.get_axis(JS_XAXIS)>0):
-            if not thisLevel.CheckIfHitWall((character.x + character.speed, character.y), (character.nearestRow, character.nearestCol)): 
-                character.velX = character.speed
-                character.velY = 0
-                character.pendingMove = True
+          character.queueMove(Directions.RIGHT, thisLevel)
                 
         elif (externalInput is not None and externalInput == "a") or pygame.key.get_pressed()[ pygame.K_LEFT ] or (js!=None and js.get_axis(JS_XAXIS)<0):
-            if not thisLevel.CheckIfHitWall((character.x - character.speed, character.y), (character.nearestRow, character.nearestCol)): 
-                character.velX = -character.speed
-                character.velY = 0
-                character.pendingMove = True
+          character.queueMove(Directions.LEFT, thisLevel)
             
         elif (externalInput is not None and externalInput == "s") or pygame.key.get_pressed()[ pygame.K_DOWN ] or (js!=None and js.get_axis(JS_YAXIS)>0):
-            if not thisLevel.CheckIfHitWall((character.x, character.y + character.speed), (character.nearestRow, character.nearestCol)): 
-                character.velX = 0
-                character.velY = character.speed
-                character.pendingMove = True
+          character.queueMove(Directions.DOWN, thisLevel)
             
         elif (externalInput is not None and externalInput == "w") or pygame.key.get_pressed()[ pygame.K_UP ] or (js!=None and js.get_axis(JS_YAXIS)<0):
-            if not thisLevel.CheckIfHitWall((character.x, character.y - character.speed), (character.nearestRow, character.nearestCol)):
-                character.velX = 0
-                character.velY = -character.speed
-                character.pendingMove = True
+          character.queueMove(Directions.UP, thisLevel)
                 
     if pygame.key.get_pressed()[ pygame.K_ESCAPE ]:
         sys.exit(0)
