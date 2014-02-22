@@ -1326,25 +1326,25 @@ def CheckIfCloseButton(events):
             sys.exit(0)
 
 
-def CheckInputs(): 
+def CheckInputs(externalInput = None): 
     
     if thisGame.mode == 1:
-        if pygame.key.get_pressed()[ pygame.K_RIGHT ] or (js!=None and js.get_axis(JS_XAXIS)>0):
+        if (externalInput is not None and externalInput == "d") or pygame.key.get_pressed()[ pygame.K_RIGHT ] or (js!=None and js.get_axis(JS_XAXIS)>0):
             if not thisLevel.CheckIfHitWall((player.x + player.speed, player.y), (player.nearestRow, player.nearestCol)): 
                 player.velX = player.speed
                 player.velY = 0
                 
-        elif pygame.key.get_pressed()[ pygame.K_LEFT ] or (js!=None and js.get_axis(JS_XAXIS)<0):
+        elif (externalInput is not None and externalInput == "a") or pygame.key.get_pressed()[ pygame.K_LEFT ] or (js!=None and js.get_axis(JS_XAXIS)<0):
             if not thisLevel.CheckIfHitWall((player.x - player.speed, player.y), (player.nearestRow, player.nearestCol)): 
                 player.velX = -player.speed
                 player.velY = 0
             
-        elif pygame.key.get_pressed()[ pygame.K_DOWN ] or (js!=None and js.get_axis(JS_YAXIS)>0):
+        elif (externalInput is not None and externalInput == "s") or pygame.key.get_pressed()[ pygame.K_DOWN ] or (js!=None and js.get_axis(JS_YAXIS)>0):
             if not thisLevel.CheckIfHitWall((player.x, player.y + player.speed), (player.nearestRow, player.nearestCol)): 
                 player.velX = 0
                 player.velY = player.speed
             
-        elif pygame.key.get_pressed()[ pygame.K_UP ] or (js!=None and js.get_axis(JS_YAXIS)<0):
+        elif (externalInput is not None and externalInput == "w") or pygame.key.get_pressed()[ pygame.K_UP ] or (js!=None and js.get_axis(JS_YAXIS)<0):
             if not thisLevel.CheckIfHitWall((player.x, player.y - player.speed), (player.nearestRow, player.nearestCol)):
                 player.velX = 0
                 player.velY = -player.speed
