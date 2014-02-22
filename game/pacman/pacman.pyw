@@ -1465,7 +1465,7 @@ if(SERVER_MODE == True):
     rthreads = []
     threads = 1
     for i in range(threads):
-        t = twitch_bot(thisGame)
+        t = twitch_bot(thisGame, player)
         rthreads.append(t)
         t.start()
 
