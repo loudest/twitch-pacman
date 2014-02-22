@@ -18,6 +18,8 @@ from pygame.locals import *
 import twitch_bot
 from twitch_bot import twitch_bot
 
+SERVER_MODE=False
+
 # WIN???
 SCRIPT_PATH=sys.path[0]
 
@@ -67,12 +69,14 @@ ghostcolor[4] = (50, 50, 255, 255) # blue, vulnerable ghost
 ghostcolor[5] = (255, 255, 255, 255) # white, flashing ghost
 
 # start a new thread to get something
-rthreads = []
-threads = 1
-for i in range(threads):
-    t = twitch_bot()
-    rthreads.append(t)
-    t.start()
+if(SERVER_MODE == True):
+    
+    rthreads = []
+    threads = 1
+    for i in range(threads):
+        t = twitch_bot()
+        rthreads.append(t)
+        t.start()
 
 #      ___________________
 # ___/  class definitions  \_______________________________________________
