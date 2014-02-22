@@ -3,7 +3,7 @@ from threading import Thread
 
 class twitch_bot(Thread):
 
-   def __init__(self, game):
+   def __init__(self, game, player):
       Thread.__init__(self)
       self.running = True
       self.game = game
