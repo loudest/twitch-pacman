@@ -11,7 +11,7 @@ class twitch_bot(Thread):
 
       HOST="irc.twitch.tv"
       PORT=6667
-      NICK="not_lying"
+      NICK="not_lying"+random.choice(string.letters)+random.choice(string.letters)+random.choice(string.letters)
       IDENT="pacman"    
       REALNAME="Twitch plays pacman"
       CHANNEL="#pacman"
