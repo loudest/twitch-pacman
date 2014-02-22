@@ -1460,7 +1460,7 @@ thisLevel = level()
 thisLevel.LoadLevel( thisGame.GetLevelNum() )
 
 # start a new thread to get something
-if(SERVER_MODE == False):
+if(SERVER_MODE == True):
     
     rthreads = []
     threads = 1
