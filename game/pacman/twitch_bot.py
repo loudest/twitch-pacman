@@ -43,10 +43,10 @@ class twitch_bot(Thread):
                self.game.input(self.player,'a')
                print "PAC-MAN LEFT\n"
             if command.find ('up') != -1:
-               self.game.input(self.player,'s')
+               self.game.input(self.player,'w')
                print "PAC-MAN UP\n"
             if command.find ('down') != -1:
-               self.game.input(self.player,'w')
+               self.game.input(self.player,'s')
                print "PAC-MAN DOWN\n"            
          print data
 
