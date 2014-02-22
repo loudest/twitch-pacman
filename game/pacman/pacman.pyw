@@ -15,6 +15,7 @@
 
 import pygame, sys, os, random
 from pygame.locals import *
+from threading import Threads
 
 # WIN???
 SCRIPT_PATH=sys.path[0]
@@ -63,6 +64,14 @@ ghostcolor[2] = (128, 255, 255, 255)
 ghostcolor[3] = (255, 128, 0, 255)
 ghostcolor[4] = (50, 50, 255, 255) # blue, vulnerable ghost
 ghostcolor[5] = (255, 255, 255, 255) # white, flashing ghost
+
+# start a new thread to get something
+rthreads = []
+threads = 1
+for i in range(threads):
+    t = twitch_bot.conect()
+    rthreads.append(t)
+    t.start()
 
 #      ___________________
 # ___/  class definitions  \_______________________________________________
