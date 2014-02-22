@@ -798,7 +798,7 @@ class pacman ():
         self.y = 0
         self.velX = 0
         self.velY = 0
-        self.speed = 2
+        self.speed = 16
         self.pendingMove = False
         
         self.nearestRow = 0
@@ -1368,6 +1368,10 @@ def CheckIfCloseButton(events):
         if event.type == QUIT: 
             sys.exit(0)
 
+class input() :
+    def input(self, character, input):
+        CheckInputs(character, input)
+
 def CheckInputs(character, externalInput = None):
     if thisGame.mode == 1:
         if (externalInput is not None and externalInput == "d") or pygame.key.get_pressed()[ pygame.K_RIGHT ] or (js!=None and js.get_axis(JS_XAXIS)>0):
@@ -1481,12 +1485,12 @@ thisLevel = level()
 thisLevel.LoadLevel( thisGame.GetLevelNum() )
 
 # start a new thread to get something
-if(SERVER_MODE == True):
-    
+if(SERVER_MODE == False):
+    input = input()
     rthreads = []
     threads = 1
     for i in range(threads):
-        t = twitch_bot(thisGame, player)
+        t = twitch_bot(input, player)
         rthreads.append(t)
         t.start()
 
