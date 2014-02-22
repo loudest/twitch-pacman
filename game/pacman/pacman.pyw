@@ -928,9 +928,6 @@ class pacman ():
             # we're going to hit a wall -- stop moving
             self.velX = 0
             self.velY = 0
-
-            # Move Complete!
-            self.pendingMove = False
             
         # deal with power-pellet ghost timer
         if thisGame.ghostTimer > 0:
@@ -965,6 +962,9 @@ class pacman ():
             
         if thisGame.fruitScoreTimer > 0:
             thisGame.fruitScoreTimer -= 1
+
+        # Move Complete!
+        self.pendingMove = False
 
         
     def Draw (self):
