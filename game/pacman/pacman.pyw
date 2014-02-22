@@ -615,6 +615,31 @@ class ghost ():
                 self.animFrame = 1
                 
             self.animDelay = 0
+
+    def QueueMove (self, direction, currentLevel):
+        if (direction == Directions.RIGHT):
+            if not currentLevel.CheckIfHitWall((self.x + self.speed, self.y), (self.nearestRow, self.nearestCol)): 
+                self.velX = self.speed
+                self.velY = 0
+                self.pendingMove = True
+                
+        elif (direction == Directions.LEFT):
+            if not currentLevel.CheckIfHitWall((self.x - self.speed, self.y), (self.nearestRow, self.nearestCol)): 
+                self.velX = -self.speed
+                self.velY = 0
+                self.pendingMove = True
+            
+        elif (direction == Directions.DOWN):
+            if not currentLevel.CheckIfHitWall((self.x, self.y + self.speed), (self.nearestRow, self.nearestCol)): 
+                self.velX = 0
+                self.velY = self.speed
+                self.pendingMove = True
+            
+        elif (direction == Directions.UP):
+            if not currentLevel.CheckIfHitWall((self.x, self.y - self.speed), (self.nearestRow, self.nearestCol)):
+                self.velX = 0
+                self.velY = -self.speed
+                self.pendingMove = True
             
     def Move (self):
         
@@ -823,7 +848,7 @@ class pacman ():
 
         self.pelletSndNum = 0
 
-    def queueMove (self, direction, currentLevel):
+    def QueueMove (self, direction, currentLevel):
         if (direction == Directions.RIGHT):
             if not currentLevel.CheckIfHitWall((self.x + self.speed, self.y), (self.nearestRow, self.nearestCol)): 
                 self.velX = self.speed
@@ -1375,16 +1400,16 @@ class input() :
 def CheckInputs(character, externalInput = None):
     if thisGame.mode == 1:
         if (externalInput is not None and externalInput == "d") or pygame.key.get_pressed()[ pygame.K_RIGHT ] or (js!=None and js.get_axis(JS_XAXIS)>0):
-          character.queueMove(Directions.RIGHT, thisLevel)
+          character.QueueMove(Directions.RIGHT, thisLevel)
                 
         elif (externalInput is not None and externalInput == "a") or pygame.key.get_pressed()[ pygame.K_LEFT ] or (js!=None and js.get_axis(JS_XAXIS)<0):
-          character.queueMove(Directions.LEFT, thisLevel)
+          character.QueueMove(Directions.LEFT, thisLevel)
             
         elif (externalInput is not None and externalInput == "s") or pygame.key.get_pressed()[ pygame.K_DOWN ] or (js!=None and js.get_axis(JS_YAXIS)>0):
-          character.queueMove(Directions.DOWN, thisLevel)
+          character.QueueMove(Directions.DOWN, thisLevel)
             
         elif (externalInput is not None and externalInput == "w") or pygame.key.get_pressed()[ pygame.K_UP ] or (js!=None and js.get_axis(JS_YAXIS)<0):
-          character.queueMove(Directions.UP, thisLevel)
+          character.QueueMove(Directions.UP, thisLevel)
                 
     if pygame.key.get_pressed()[ pygame.K_ESCAPE ]:
         sys.exit(0)
