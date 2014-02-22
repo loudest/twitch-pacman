@@ -3,11 +3,12 @@ from threading import Thread
 
 class twitch_bot(Thread):
 
-   def __init__(self, game, player):
+   def __init__(self, game, player, level):
       Thread.__init__(self)
       self.running = True
       self.game = game
       self.player = player
+      self.level = level
 
    def connect(self):
 
@@ -36,17 +37,17 @@ class twitch_bot(Thread):
             #pac-man commands
             command = data.split()[3].lower()
             print "COMMAND: %s\n" % (command) 
-            if command.find ('right') != -1:
-               self.game.input(self.player,'d')
+            if data.find ('right') != -1:
+               self.game.input(self.player, self.level, 'd')
                print "PAC-MAN RIGHT\n"
-            if command.find ('left') != -1:
-               self.game.input(self.player,'a')
+            if data.find ('left') != -1:
+               self.game.input(self.player, self.level, 'a')
                print "PAC-MAN LEFT\n"
-            if command.find ('up') != -1:
-               self.game.input(self.player,'w')
+            if data.find ('up') != -1:
+               self.game.input(self.player, self.level, 'w')
                print "PAC-MAN UP\n"
-            if command.find ('down') != -1:
-               self.game.input(self.player,'s')
+            if data.find ('down') != -1:
+               self.game.input(self.player, self.level, 's')
                print "PAC-MAN DOWN\n"            
          print data
 

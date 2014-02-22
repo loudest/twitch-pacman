@@ -1394,8 +1394,18 @@ def CheckIfCloseButton(events):
             sys.exit(0)
 
 class input() :
-    def input(self, character, input):
-        CheckInputs(character, input)
+    def input(self, character, thisLevel, input):
+        if (input == "d"):
+            character.QueueMove(Directions.RIGHT, thisLevel)
+                
+        elif (input == "a"):
+            character.QueueMove(Directions.LEFT, thisLevel)
+            
+        elif (input == "s"):
+            character.QueueMove(Directions.DOWN, thisLevel)
+            
+        elif (input == "w"):
+            character.QueueMove(Directions.UP, thisLevel)
 
 def CheckInputs(character, externalInput = None):
     if thisGame.mode == 1:
@@ -1498,7 +1508,7 @@ for i in range(0, 6, 1):
     ghosts[i] = ghost(i)
     
 # create piece of fruit
-thisFruit = fruit()
+thisFruit = fruit() 
 
 tileIDName = {} # gives tile name (when the ID# is known)
 tileID = {} # gives tile ID (when the name is known)
@@ -1515,7 +1525,7 @@ if(SERVER_MODE == True):
     rthreads = []
     threads = 1
     for i in range(threads):
-        t = twitch_bot(input, player)
+        t = twitch_bot(input, player,thisLevel)
         rthreads.append(t)
         t.start()
 
