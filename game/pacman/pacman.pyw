@@ -512,7 +512,7 @@ class ghost ():
         self.y = 0
         self.velX = 0
         self.velY = 0
-        self.speed = 1
+        self.speed = 16
         # True always for now - once the ghost is controllable, should only change with new inputs
         self.pendingMove = True
         
@@ -928,6 +928,9 @@ class pacman ():
             # we're going to hit a wall -- stop moving
             self.velX = 0
             self.velY = 0
+
+            # Move Complete!
+            self.pendingMove = False
             
         # deal with power-pellet ghost timer
         if thisGame.ghostTimer > 0:
@@ -962,9 +965,6 @@ class pacman ():
             
         if thisGame.fruitScoreTimer > 0:
             thisGame.fruitScoreTimer -= 1
-
-        # Move Complete!
-        self.pendingMove = False
 
         
     def Draw (self):
