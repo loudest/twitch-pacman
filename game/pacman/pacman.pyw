@@ -888,7 +888,7 @@ class pacman ():
             thisLevel.CheckIfHitSomething((self.x, self.y), (self.nearestRow, self.nearestCol))
             
             # check for collisions with the ghosts
-            for i in range(0, 4, 1):
+            for i in range(0, 1, 1):
                 if thisLevel.CheckIfHit( (self.x, self.y), (ghosts[i].x, ghosts[i].y), 8):
                     # hit a ghost
                     
@@ -937,7 +937,7 @@ class pacman ():
             thisGame.ghostTimer -= 1
             
             if thisGame.ghostTimer == 0:
-                for i in range(0, 4, 1):
+                for i in range(0, 1, 1):
                     if ghosts[i].state == 2:
                         ghosts[i].state = 1
                 self.ghostValue = 0
@@ -1096,7 +1096,7 @@ class level ():
                         thisGame.ghostValue = 200
                         
                         thisGame.ghostTimer = 360
-                        for i in range(0, 4, 1):
+                        for i in range(0, 1, 1):
                             if ghosts[i].state == 1:
                                 ghosts[i].state = 2
                         
@@ -1310,9 +1310,14 @@ class level ():
                     # print str( len(str_splitBySpace) ) + " tiles in this column"
                     
                     for k in range(0, self.lvlWidth, 1):
-                        self.SetMapTile((rowNum, k), int(str_splitBySpace[k]) )
-                        
                         thisID = int(str_splitBySpace[k])
+
+                        # Removing all but Ghost #10
+                        if (thisID >= 11 and thisID <=13) :
+                            thisID = 0
+
+                        self.SetMapTile((rowNum, k), thisID)
+                        
                         if thisID == 4: 
                             # starting position for pac-man
                             
@@ -1353,7 +1358,7 @@ class level ():
         
     def Restart (self):
         
-        for i in range(0, 4, 1):
+        for i in range(0, 1, 1):
             # move ghosts back to home
 
             ghosts[i].x = ghosts[i].homeX
@@ -1503,7 +1508,7 @@ path = path_finder()
 
 # create ghost objects
 ghosts = {}
-for i in range(0, 6, 1):
+for i in range(0, 2, 1):
     # remember, ghost[4] is the blue, vulnerable ghost
     ghosts[i] = ghost(i)
     
@@ -1552,7 +1557,7 @@ while True:
         thisGame.modeTimer += 1
         if player.pendingMove and ghosts[i].pendingMove:
             player.Move()
-            for i in range(0, 4, 1):
+            for i in range(0, 1, 1):
                 ghosts[i].Move()
             thisFruit.Move()
             
@@ -1639,7 +1644,7 @@ while True:
             if thisGame.modeTimer % 2 == 0:
                 thisGame.DrawNumber (2500, (thisFruit.x - thisGame.screenPixelPos[0] - 16, thisFruit.y - thisGame.screenPixelPos[1] + 4))
 
-        for i in range(0, 4, 1):
+        for i in range(0, 1, 1):
             ghosts[i].Draw()
         thisFruit.Draw()
         player.Draw()
