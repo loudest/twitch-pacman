@@ -529,22 +529,18 @@ class move_requests ():
       if (direction == Directions.RIGHT):
           if not currentLevel.CheckIfHitWall((player.x + 16, player.y), (player.nearestRow, player.nearestCol)): 
               self.right += 1
-              print "Move right requested"
               
       elif (direction == Directions.LEFT):
           if not currentLevel.CheckIfHitWall((player.x - 16, player.y), (player.nearestRow, player.nearestCol)): 
               self.left += 1
-              print "Move left requested"
           
       elif (direction == Directions.DOWN):
           if not currentLevel.CheckIfHitWall((player.x, player.y + 16), (player.nearestRow, player.nearestCol)): 
               self.down += 1
-              print "Move down requested"
 
       elif (direction == Directions.UP):
           if not currentLevel.CheckIfHitWall((player.x, player.y - 16), (player.nearestRow, player.nearestCol)):
               self.up += 1
-              print "Move up requested"
       else:
           print "Move", direction, "requested, but not queued as it would be invalid"
 
@@ -552,22 +548,18 @@ class move_requests ():
    def democracy(self, player, currentLevel):
       if (self.left >= self.right) and (self.left >= self.up) and (self.left >= self.down) and (self.left > 0):
         if not currentLevel.CheckIfHitWall((player.x - 16, player.y), (player.nearestRow, player.nearestCol)): 
-          print "Setting velocity left"
           player.velX = -player.speed
           player.velY = 0
       elif (self.right >= self.left) and (self.right >= self.up) and (self.right >= self.down) and (self.right > 0):
         if not currentLevel.CheckIfHitWall((player.x + 16, player.y), (player.nearestRow, player.nearestCol)): 
-          print "Setting velocity left"
           player.velX = player.speed
           player.velY = 0
       elif (self.up >= self.right) and (self.up >= self.left) and (self.up >= self.down) and (self.up > 0):
         if not currentLevel.CheckIfHitWall((player.x, player.y - 16), (player.nearestRow, player.nearestCol)): 
-          print "Setting velocity up"
           player.velX = 0
           player.velY = -player.speed
       elif (self.down >= self.right) and (self.down >= self.up) and (self.down >= self.left) and (self.down > 0):
         if not currentLevel.CheckIfHitWall((player.x, player.y + 16), (player.nearestRow, player.nearestCol)): 
-          print "Setting velocity down"
           player.velX = 0
           player.velY = player.speed
       else:
@@ -696,10 +688,7 @@ class ghost ():
             
     def SelectMove(self, currentLevel):
         if self.PlayerControlled():
-          print "Selecting Ghost Moves", self.state
           self.move_requests.democracy(self, currentLevel)
-        else:
-          print 'Not moving ghost, state is ', self.state
 
     def Move (self):
           self.nearestRow = int(((self.y + 8) / 16))
@@ -855,6 +844,7 @@ class fruit ():
             
     def FollowNextPathWay (self):
 
+
         # only follow this pathway if there is a possible path found!
         if not self.currentPath == False:
         
@@ -875,7 +865,7 @@ class pacman ():
         self.y = 0
         self.velX = 0
         self.velY = 0
-        self.speed = 1
+        self.speed = 2
 
         self.move_requests = move_requests()
         
@@ -905,7 +895,6 @@ class pacman ():
         self.move_requests.request_move(self, currentLevel, direction)
 
     def SelectMove(self, currentLevel):
-        print "Selecting Pac-Man Move"
         self.move_requests.democracy(self, currentLevel)
         
     def Move (self):
@@ -1551,7 +1540,7 @@ for i in range(0, 3, 1):
 players = [ player, ghosts[0] ]
     
 # create piece of fruit
-thisFruit = fruit() 
+thisFruit = fruit()
 
 tileIDName = {} # gives tile name (when the ID# is known)
 tileID = {} # gives tile ID (when the name is known)
@@ -1618,7 +1607,7 @@ while True:
         if ((datetime.now() - lastMoveTime).seconds >= TURN_DURATION):
           # Select our moves
           player.SelectMove(thisLevel)
-          for i in range(0, 3, 1):
+          for i in range(0, 1, 1):
             ghosts[i].SelectMove(thisLevel)
 
           # Reset the clock
@@ -1626,7 +1615,7 @@ while True:
 
         # Act on moves already in progress
         player.Move()
-        for i in range(0, 3, 1):
+        for i in range(0, 1, 1):
           ghosts[i].Move()
         thisFruit.Move()
             
@@ -1713,7 +1702,7 @@ while True:
             if thisGame.modeTimer % 2 == 0:
                 thisGame.DrawNumber (2500, (thisFruit.x - thisGame.screenPixelPos[0] - 16, thisFruit.y - thisGame.screenPixelPos[1] + 4))
 
-        for i in range(0, 3, 1):
+        for i in range(0, 1, 1):
             ghosts[i].Draw()
         thisFruit.Draw()
         player.Draw()
