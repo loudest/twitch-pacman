@@ -18,9 +18,11 @@ from pygame.locals import *
 import twitch_bot
 from twitch_bot import twitch_bot
 from donation_bot import donation_bot
+from twitter_bot import twitter_bot
 
 # Whether or not to connect to IRC
 SERVER_MODE=True
+TWITTER_MODE = False
 
 # WIN???
 SCRIPT_PATH=sys.path[0]
@@ -1554,6 +1556,11 @@ if(SERVER_MODE == True):
     donations_thread = donation_bot()
     threads.append(donations_thread)
     donations_thread.start()
+
+if(TWITTER_MODE == TRUE):
+	twitter_thread = twitter_bot(players, thisLevel)
+	threads.append(twitter_thread)
+	twitter_thread.start()
 
 while True: 
 
