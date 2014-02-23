@@ -14,7 +14,7 @@ class twitch_bot(Thread):
 
       HOST="irc.twitch.tv"
       PORT=6667
-      NICK="lxndkcfi"
+      NICK="adfadfadfadfadf"
       IDENT="pacman"    
       REALNAME="Twitch plays pacman"
       CHANNEL="#twitchispacman"
@@ -22,7 +22,7 @@ class twitch_bot(Thread):
       readbuffer = ""
       irc=socket.socket()
       irc.connect((HOST, PORT))
-      irc.send("PASS oauth:7xd9z7gljnxy3kr42uuberuumnaqaoh\r\n")
+      irc.send("PASS oauth:a7k5b9vzxor9d6tzarlia9rjw2c24kn\r\n")
       irc.send("NICK %s\r\n" % NICK)
       irc.send("USER %s %s :%s\r\n" % (IDENT, IDENT, REALNAME))
       irc.send("JOIN %s\r\n" % (CHANNEL))
