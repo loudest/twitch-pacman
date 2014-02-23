@@ -17,7 +17,7 @@ import pygame, sys, os, random, time
 from pygame.locals import *
 import twitch_bot
 from twitch_bot import twitch_bot
-from twitter_bot import twitter_bot
+#from twitter_bot import twitter_bot
 from donation_bot import donation_bot
 from datetime import datetime
 
@@ -584,7 +584,7 @@ class ghost ():
         self.y = 0
         self.velX = 0
         self.velY = 0
-        self.speed = 2
+        self.speed = 1
 
         self.move_requests = move_requests()
         
@@ -620,7 +620,7 @@ class ghost ():
         self.animDelay = 0
     
     def PlayerControlled(self):
-        return bool(self.state == 1)
+        return bool(self.state == 1 or self.state == 2)
         
     def Draw (self):
         
@@ -699,7 +699,7 @@ class ghost ():
           print "Selecting Ghost Moves", self.state
           self.move_requests.democracy(self, currentLevel)
         else:
-          print 'Ghost state is ', self.state
+          print 'Not moving ghost, state is ', self.state
 
     def Move (self):
           self.nearestRow = int(((self.y + 8) / 16))
@@ -711,10 +711,14 @@ class ghost ():
               self.x += self.velX
               self.y += self.velY
 
-              # If we're lined up with the grid now and under player control, stop
-              if (self.x % 16) == 0 and (self.y % 16) == 0 and self.PlayerControlled():
-                self.velX = 0
-                self.velY = 0
+              # If we're lined up with the grid.
+              if ((self.x % 16) == 0 and (self.y % 16) == 0):
+                if (self.PlayerControlled()):
+                  self.velX = 0
+                  self.velY = 0
+                elif (self.currentPath):
+                  self.currentPath = self.currentPath[1:]
+                  self.FollowNextPathWay()
           
           else:
               # we're going to hit a wall -- stop moving
@@ -763,7 +767,7 @@ class fruit ():
         self.y = -16
         self.velX = 0
         self.velY = 0
-        self.speed = 2
+        self.speed = 1
         self.active = False
         
         self.bouncei = 0
@@ -871,7 +875,7 @@ class pacman ():
         self.y = 0
         self.velX = 0
         self.velY = 0
-        self.speed = 2
+        self.speed = 1
 
         self.move_requests = move_requests()
         
@@ -924,7 +928,7 @@ class pacman ():
             thisLevel.CheckIfHitSomething((self.x, self.y), (self.nearestRow, self.nearestCol))
             
             # check for collisions with the ghosts
-            for i in range(0, 3, 1):
+            for i in range(0, 1, 1):
                 if thisLevel.CheckIfHit( (self.x, self.y), (ghosts[i].x, ghosts[i].y), 8):
                     # hit a ghost
                     
@@ -946,6 +950,7 @@ class pacman ():
                         ghosts[i].x = ghosts[i].nearestCol * 16
                         ghosts[i].y = ghosts[i].nearestRow * 16
                         ghosts[i].currentPath = path.FindPath( (ghosts[i].nearestRow, ghosts[i].nearestCol), (thisLevel.GetGhostBoxPos()[0]+1, thisLevel.GetGhostBoxPos()[1]) )
+                        ghosts[i].FollowNextPathWay()
                         
                         # set game mode to brief pause after eating
                         thisGame.SetMode( 5 )
@@ -969,7 +974,7 @@ class pacman ():
             thisGame.ghostTimer -= 1
             
             if thisGame.ghostTimer == 0:
-                for i in range(0, 3, 1):
+                for i in range(0, 1, 1):
                     if ghosts[i].state == 2:
                         ghosts[i].state = 1
                 self.ghostValue = 0
@@ -1128,7 +1133,7 @@ class level ():
                         thisGame.ghostValue = 200
                         
                         thisGame.ghostTimer = 360
-                        for i in range(0, 3, 1):
+                        for i in range(0, 1, 1):
                             if ghosts[i].state == 1:
                                 ghosts[i].state = 2
                         
@@ -1390,7 +1395,7 @@ class level ():
         
     def Restart (self):
         
-        for i in range(0, 3, 1):
+        for i in range(0, 1, 1):
             # move ghosts back to home
 
             ghosts[i].x = ghosts[i].homeX
@@ -1398,7 +1403,7 @@ class level ():
             ghosts[i].velX = 0
             ghosts[i].velY = 0
             ghosts[i].state = 1
-            ghosts[i].speed = 2
+            ghosts[i].speed = 1
             ghosts[i].Move()
             
             # give each ghost a path to a random spot (containing a pellet)
@@ -1586,10 +1591,10 @@ if(SERVER_MODE == True):
     threads.append(donations_thread)
     donations_thread.start()
 
-if(TWITTER_MODE == True):
-	twitter_thread = twitter_bot(players, thisLevel)
-	threads.append(twitter_thread)
-	twitter_thread.start()
+#if(TWITTER_MODE == True):
+#	twitter_thread = twitter_bot(players, thisLevel)
+#	threads.append(twitter_thread)
+#	twitter_thread.start()
 
 # Start the turn clock
 lastMoveTime = datetime.now()
