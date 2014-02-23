@@ -1499,7 +1499,6 @@ thisLevel.LoadLevel( thisGame.GetLevelNum() )
 rthreads = []
 if(SERVER_MODE == True):
     input = input()
-    rthreads = []
     threads = 1
     for i in range(threads):
         t = twitch_bot(input, players,thisLevel)
