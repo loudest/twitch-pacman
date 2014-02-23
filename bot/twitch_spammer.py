@@ -1,10 +1,10 @@
-import twitter, json, redis, time, sys, socket, string, random, math, fileinput
+import json, time, sys, socket, string, random, math, fileinput
 from threading import Thread
 
 IDENT = 'pacman'
 REAL_NAME = 'Twitch plays pacman'
 CHANNEL_ONE = '#twitchispacman'
-CHANNEL_TWO = 'twitchisblinky'
+CHANNEL_TWO = '#twitchisblinky'
 HOST = 'irc.twitch.tv'
 PORT = 6667
 
@@ -51,8 +51,9 @@ class twitch_bot(Thread):
 					elif(num == 3):
 						command = 'up'
 
-					print ("SENDING PACMAN %s\n" % command)
+					#print ("SENDING PACMAN %s\n" % command)
 					irc.send('PRIVMSG %s :%s\r\n' % (CHANNEL_ONE, command))
+					time.sleep(15)
 
 				#blinky
 				else:
@@ -65,13 +66,13 @@ class twitch_bot(Thread):
 					elif(num == 3):
 						command = 'up'
 
-					print ("SENDING BLINKY %s\n" % command)
+					#print ("SENDING BLINKY %s\n" % command)
 					irc.send('PRIVMSG %s :%s\r\n' % (CHANNEL_TWO, command))
+					time.sleep(15)
 
 			except Exception, e:
 				continue
 			
-			time.sleep(10)
 
 	def run(self):
 		self.connect()
@@ -84,24 +85,14 @@ class twitch_bot(Thread):
 def loader():
 
 	threads = []
-	t = twitch_bot('blinky1005', '4pbfhq3ltswg8psjeq9i53xfd7a9tjl')
-	threads.append(t)
-	t.start()
-	t = twitch_bot('blinky1004', 'a7mr3xi912jmf72zhct3afe5ra3d797')
-	threads.append(t)
-	t.start()
-	t = twitch_bot('blinky1006', 'phkboj8njrdz3x7mthb3krm6bz3rpus')
-	threads.append(t)
-	t.start()
-	t = twitch_bot('blinky1005', '4pbfhq3ltswg8psjeq9i53xfd7a9tjl')
-	threads.append(t)
-	t.start()
-	t = twitch_bot('blinky1006', 'ke5x20xuer1ufo68k6jyulifwblwe3b')
-	threads.append(t)
-	t.start()	
-	t = twitch_bot('blinky1008', 'bk1kjo30101r7fbkpu4y84d3502ar3r')
-	threads.append(t)
-	t.start()	
+	f = open('logins.txt', 'r')
+	for line in f:
+		temp = line.split(':')
+		login = temp[0]
+		password = temp[1]
+		t = twitch_bot(login, password)
+		threads.append(t)
+		t.start()
 
 loader()
 
