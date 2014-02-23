@@ -18,11 +18,8 @@ from pygame.locals import *
 import twitch_bot
 from twitch_bot import twitch_bot
 from donation_bot import donation_bot
-<<<<<<< HEAD
 from twitter_bot import twitter_bot
-=======
 from datetime import datetime
->>>>>>> One second turns (with Animation!)
 
 # Whether or not to connect to IRC
 SERVER_MODE=True
