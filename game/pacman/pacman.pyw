@@ -626,24 +626,28 @@ class ghost ():
                 self.velX = self.speed
                 self.velY = 0
                 self.pendingMove = True
+                print "Move right queued for ghost"
                 
         elif (direction == Directions.LEFT):
             if not currentLevel.CheckIfHitWall((self.x - self.speed, self.y), (self.nearestRow, self.nearestCol)): 
                 self.velX = -self.speed
                 self.velY = 0
                 self.pendingMove = True
+                print "Move left queued for ghost"
             
         elif (direction == Directions.DOWN):
             if not currentLevel.CheckIfHitWall((self.x, self.y + self.speed), (self.nearestRow, self.nearestCol)): 
                 self.velX = 0
                 self.velY = self.speed
                 self.pendingMove = True
-            
+                print "Move down queued for ghost"
+
         elif (direction == Directions.UP):
             if not currentLevel.CheckIfHitWall((self.x, self.y - self.speed), (self.nearestRow, self.nearestCol)):
                 self.velX = 0
                 self.velY = -self.speed
                 self.pendingMove = True
+                print "Move up queued for ghost"
             
     def Move (self):
         
@@ -847,24 +851,28 @@ class pacman ():
                 self.velX = self.speed
                 self.velY = 0
                 self.pendingMove = True
+                print 'Move right queued for Pac-Man'
                 
         elif (direction == Directions.LEFT):
             if not currentLevel.CheckIfHitWall((self.x - self.speed, self.y), (self.nearestRow, self.nearestCol)): 
                 self.velX = -self.speed
                 self.velY = 0
                 self.pendingMove = True
+                print 'Move left queued for Pac-Man'
             
         elif (direction == Directions.DOWN):
             if not currentLevel.CheckIfHitWall((self.x, self.y + self.speed), (self.nearestRow, self.nearestCol)): 
                 self.velX = 0
                 self.velY = self.speed
                 self.pendingMove = True
+                print 'Move down queued for Pac-Man'
             
         elif (direction == Directions.UP):
             if not currentLevel.CheckIfHitWall((self.x, self.y - self.speed), (self.nearestRow, self.nearestCol)):
                 self.velX = 0
                 self.velY = -self.speed
                 self.pendingMove = True
+                print 'Move up queued for Pac-Man'
         
     def Move (self):
         
@@ -1390,20 +1398,6 @@ def CheckIfCloseButton(events):
         if event.type == QUIT: 
             sys.exit(0)
 
-class input() :
-    def input(self, character, thisLevel, input):
-        if (input == "d"):
-            character.QueueMove(Directions.RIGHT, thisLevel)
-                
-        elif (input == "a"):
-            character.QueueMove(Directions.LEFT, thisLevel)
-            
-        elif (input == "s"):
-            character.QueueMove(Directions.DOWN, thisLevel)
-            
-        elif (input == "w"):
-            character.QueueMove(Directions.UP, thisLevel)
-
 def CheckInputs(players, externalInput = None):
     if thisGame.mode == 1:
         # Pacman recieves WASD and the arrows
@@ -1533,24 +1527,7 @@ thisGame = game()
 thisLevel = level()
 thisLevel.LoadLevel( thisGame.GetLevelNum() )
 
-# start a new thread to get something
-# We have several threads:
-# 1.) An IRC thread, which polls for input from IRC and uses it to drive actions. It also writes those actions to file.
-# 2.) A Web Scraper, which pulls data from the donations website and writes it to text.
-
-threads = []
-if(SERVER_MODE == True):
-    #FIXME: This.
-    input = input()
-    twitch_thread = twitch_bot(input, players,thisLevel)
-    threads.append(twitch_thread)
-    twitch_thread.start()
-
-    # Scraping Thread
-    donations_thread = donation_bot()
-    threads.append(donations_thread)
-    donations_thread.start()
-
+# Start the game!
 thisGame.StartNewGame()
 
 print thisGame.screenSize
@@ -1563,6 +1540,21 @@ if pygame.joystick.get_count()>0:
   js.init()
 else: js=None
 
+# We have several threads:
+# 1.) An IRC thread, which polls for input from IRC and uses it to drive actions. It also writes those actions to file.
+# 2.) A Web Scraper, which pulls data from the donations website and writes it to text.
+threads = []
+if(SERVER_MODE == True):
+    #FIXME: This.
+    twitch_thread = twitch_bot(players,thisLevel)
+    threads.append(twitch_thread)
+    twitch_thread.start()
+
+    # Scraping Thread
+    donations_thread = donation_bot()
+    threads.append(donations_thread)
+    donations_thread.start()
+
 while True: 
 
     CheckIfCloseButton( pygame.event.get() )
@@ -1570,6 +1562,7 @@ while True:
     if thisGame.mode == 1:
         # normal gameplay mode
         if CheckInputs(players) is False:
+          print "Starting shutdown"
           for thread in threads:
             thread.stop_running()
           # Gugh. 

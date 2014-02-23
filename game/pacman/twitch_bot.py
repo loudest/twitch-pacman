@@ -1,24 +1,31 @@
 import sys, socket, string, random
 from threading import Thread
 
+HOST="irc.twitch.tv"
+PORT=6667
+NICK="adfadfadfadfadf"
+IDENT="pacman"    
+REALNAME="Twitch plays pacman"
+CHANNEL_ONE="#twitchispacman"
+CHANNEL_TWO="#twitchisblinky"
+PRIV_MSG="PRIVMSG"
+
+# FIXME: Share this properly
+def enum(**enums):
+    return type('Enum', (), enums)
+
+# Movement Directions
+Directions = enum(RIGHT=1, LEFT=2, UP=3, DOWN=4)
+
 class twitch_bot(Thread):
 
-   def __init__(self, game, players, level):
+   def __init__(self, players, level):
       Thread.__init__(self)
       self.running = True
-      self.game = game
       self.players = players
       self.level = level
 
    def connect(self):
-
-      HOST="irc.twitch.tv"
-      PORT=6667
-      NICK="adfadfadfadfadf"
-      IDENT="pacman"    
-      REALNAME="Twitch plays pacman"
-      CHANNEL_ONE="#twitchispacman"
-      CHANNEL_TWO="#twitchisblinky"
 
       readbuffer = ""
       irc=socket.socket()
@@ -39,43 +46,50 @@ class twitch_bot(Thread):
 
            list = data.split()
            if(len(list) >= 4):
-              #pac-man commands
-              # TODO: Differentiate PacMan from Ghost
-              command = data.split()[3].lower()
-              print "COMMAND: %s\n" % (command) 
-              if (data.find ('right') and data.find(CHANNEL_ONE)) != -1:
-                 self.game.input(self.players[0], self.level, 'd')
-                 print "PAC-MAN RIGHT\n"
-              if (data.find ('left') and data.find(CHANNEL_ONE)) != -1:
-                 self.game.input(self.players[0], self.level, 'a')
-                 print "PAC-MAN LEFT\n"
-              if (data.find ('up') and data.find(CHANNEL_ONE)) != -1:
-                 self.game.input(self.players[0], self.level, 'w')
-                 print "PAC-MAN UP\n"
-              if (data.find ('down') and data.find(CHANNEL_ONE)) != -1:
-                 self.game.input(self.players[0], self.level, 's')
-                 print "PAC-MAN DOWN\n"
+              # TODO: Add the nickname of the caller, and write it to file
+              # Example - :tonyzipper!tonyzipper@tonyzipper.tmi.twitch.tv PRIVMSG #twitchisblinky :down
+              print "[DATA]", data, "[/DATA]"
+              data = data.split()
+              user = data[0][1:data[0].index('!')].strip()
+              message_type = data[1].upper().strip()
+              channel = data[2].lower().strip()
+              command = data[3].lower().strip()
+              print "[MSG_TYPE]", message_type, "[/MSG_TYPE]"
 
-              if (data.find ('right') and data.find(CHANNEL_TWO)) != -1:
-                 self.game.input(self.players[1], self.level, 'l')
-                 print "BLINKY RIGHT\n"
-              if (data.find ('left') and data.find(CHANNEL_TWO)) != -1:
-                 self.game.input(self.players[1], self.level, 'j')
-                 print "BLINKY LEFT\n"
-              if (data.find ('up') and data.find(CHANNEL_TWO)) != -1:
-                 self.game.input(self.players[1], self.level, 'i')
-                 print "BLINKY UP\n"
-              if (data.find ('down') and data.find(CHANNEL_TWO)) != -1:
-                 self.game.input(self.players[1], self.level, 'k')
-                 print "BLINKY DOWN\n"                              
-           print data
+              if(message_type == PRIV_MSG):
+                print "[CHANNEL]", channel, "[/CHANNEL]"
+                if(channel == CHANNEL_ONE):
+                  print user, "Pac-Man", command
+                  if (command == ':right'):
+                     self.players[0].QueueMove(Directions.RIGHT, self.level)
+                  elif (command == ':left'):
+                     self.players[0].QueueMove(Directions.LEFT, self.level)
+                  elif (command == ':up'):
+                     self.players[0].QueueMove(Directions.UP, self.level)
+                  elif (command == ':down'):
+                     self.players[0].QueueMove(Directions.DOWN, self.level)
+
+                elif(channel == CHANNEL_TWO):
+                  print user, "Blinky", command
+                  if (command == ':right'):
+                     self.players[1].QueueMove(Directions.RIGHT, self.level)
+                  elif (command == ':left'):
+                     self.players[1].QueueMove(Directions.LEFT, self.level)
+                  elif (command == ':up'):
+                     self.players[1].QueueMove(Directions.UP, self.level)
+                  elif (command == ':down'):
+                     self.players[1].QueueMove(Directions.DOWN, self.level)
+
         except socket.timeout:
-          pass
           #print 'Socket Timeout - consider lengthing the socket timing'
+          pass
+        except ValueError:
+          print 'Value error - this is not a Pac-Man command. Passing.'
 
    def run(self):
       self.connect()
 
    def stop_running(self):
       self.running = False
+      print "Twitch Bot set to shutdown"
 

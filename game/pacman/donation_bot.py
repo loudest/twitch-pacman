@@ -7,3 +7,4 @@ class donation_bot(Thread):
 
   def stop_running(self):
     self.running = False
+    print "Donation Bot set to shutdown"
