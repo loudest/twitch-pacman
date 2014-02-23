@@ -26,7 +26,7 @@ SERVER_MODE=True
 TWITTER_MODE = False
 
 # How long to accept move requests before acting on them.
-TURN_DURATION = 1
+TURN_DURATION = 0.5
 
 # WIN???
 SCRIPT_PATH=sys.path[0]
@@ -1466,8 +1466,7 @@ def CheckInputs(players, externalInput = None):
         return False
             
     elif thisGame.mode == 3:
-        if pygame.key.get_pressed()[ pygame.K_RETURN ] or (js!=None and js.get_button(JS_STARTBUTTON)):
-            thisGame.StartNewGame()
+        thisGame.StartNewGame()
 
     
 #      _____________________________________________
