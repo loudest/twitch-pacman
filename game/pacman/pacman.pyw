@@ -69,11 +69,8 @@ snd_extralife = pygame.mixer.Sound(os.path.join(SCRIPT_PATH,"res","sounds","extr
 
 ghostcolor = {}
 ghostcolor[0] = (255, 0, 0, 255)
-ghostcolor[1] = (255, 128, 255, 255)
-ghostcolor[2] = (128, 255, 255, 255)
-ghostcolor[3] = (255, 128, 0, 255)
-ghostcolor[4] = (50, 50, 255, 255) # blue, vulnerable ghost
-ghostcolor[5] = (255, 255, 255, 255) # white, flashing ghost
+ghostcolor[1] = (50, 50, 255, 255) # blue, vulnerable ghost
+ghostcolor[2] = (255, 255, 255, 255) # white, flashing ghost
 
 def enum(**enums):
     return type('Enum', (), enums)
@@ -926,7 +923,7 @@ class pacman ():
             thisLevel.CheckIfHitSomething((self.x, self.y), (self.nearestRow, self.nearestCol))
             
             # check for collisions with the ghosts
-            for i in range(0, 1, 1):
+            for i in range(0, 3, 1):
                 if thisLevel.CheckIfHit( (self.x, self.y), (ghosts[i].x, ghosts[i].y), 8):
                     # hit a ghost
                     
@@ -971,7 +968,7 @@ class pacman ():
             thisGame.ghostTimer -= 1
             
             if thisGame.ghostTimer == 0:
-                for i in range(0, 1, 1):
+                for i in range(0, 3, 1):
                     if ghosts[i].state == 2:
                         ghosts[i].state = 1
                 self.ghostValue = 0
@@ -1130,7 +1127,7 @@ class level ():
                         thisGame.ghostValue = 200
                         
                         thisGame.ghostTimer = 360
-                        for i in range(0, 1, 1):
+                        for i in range(0, 3, 1):
                             if ghosts[i].state == 1:
                                 ghosts[i].state = 2
                         
@@ -1392,7 +1389,7 @@ class level ():
         
     def Restart (self):
         
-        for i in range(0, 1, 1):
+        for i in range(0, 3, 1):
             # move ghosts back to home
 
             ghosts[i].x = ghosts[i].homeX
@@ -1541,7 +1538,7 @@ path = path_finder()
 
 # create ghost objects
 ghosts = {}
-for i in range(0, 2, 1):
+for i in range(0, 3, 1):
     # remember, ghost[4] is the blue, vulnerable ghost
     ghosts[i] = ghost(i)
 
@@ -1611,7 +1608,7 @@ while True:
         if ((datetime.now() - lastMoveTime).seconds >= TURN_DURATION):
           # Select our moves
           player.SelectMove(thisLevel)
-          for i in range(0, 2, 1):
+          for i in range(0, 3, 1):
             ghosts[i].SelectMove(thisLevel)
 
           # Reset the clock
@@ -1619,7 +1616,7 @@ while True:
 
         # Act on moves already in progress
         player.Move()
-        for i in range(0, 2, 1):
+        for i in range(0, 3, 1):
           ghosts[i].Move()
         thisFruit.Move()
             
@@ -1706,7 +1703,7 @@ while True:
             if thisGame.modeTimer % 2 == 0:
                 thisGame.DrawNumber (2500, (thisFruit.x - thisGame.screenPixelPos[0] - 16, thisFruit.y - thisGame.screenPixelPos[1] + 4))
 
-        for i in range(0, 1, 1):
+        for i in range(0, 3, 1):
             ghosts[i].Draw()
         thisFruit.Draw()
         player.Draw()
