@@ -545,6 +545,9 @@ class ghost ():
             
         self.animFrame = 1
         self.animDelay = 0
+    
+    def PlayerControlled(self):
+        return bool(self.state is not 1)
         
     def Draw (self):
         
@@ -616,6 +619,7 @@ class ghost ():
             self.animDelay = 0
 
     def QueueMove (self, direction, currentLevel):
+
         if (direction == Directions.RIGHT):
             if not currentLevel.CheckIfHitWall((self.x + self.speed, self.y), (self.nearestRow, self.nearestCol)): 
                 self.velX = self.speed
@@ -658,7 +662,40 @@ class ghost ():
             
         # Move Complete!
         self.pendingMove = False
-            
+
+    def FollowNextPathWay (self):
+        
+        # print "Ghost " + str(self.id) + " rem: " + self.currentPath
+        
+        # only follow this pathway if there is a possible path found!
+        if not self.currentPath == False:
+        
+            if len(self.currentPath) > 0:
+                if self.currentPath[0] == "L":
+                    (self.velX, self.velY) = (-self.speed, 0)
+                elif self.currentPath[0] == "R":
+                    (self.velX, self.velY) = (self.speed, 0)
+                elif self.currentPath[0] == "U":
+                    (self.velX, self.velY) = (0, -self.speed)
+                elif self.currentPath[0] == "D":
+                    (self.velX, self.velY) = (0, self.speed)
+                    
+            else:
+                # this ghost has reached his destination!!
+                
+                if not self.state == 3:
+                    # chase pac-man
+                    self.currentPath = path.FindPath( (self.nearestRow, self.nearestCol), (player.nearestRow, player.nearestCol) )
+                    self.FollowNextPathWay()
+                
+                else:
+                    # glasses found way back to ghost box
+                    self.state = 1
+                    self.speed = self.speed / 4
+
+                    # Move outside the box
+                    self.x = self.homeX
+                    self.y = self.homeY
 
 class fruit ():
     def __init__ (self):
@@ -803,6 +840,7 @@ class pacman ():
         self.pelletSndNum = 0
 
     def QueueMove (self, direction, currentLevel):
+
         if (direction == Directions.RIGHT):
             if not currentLevel.CheckIfHitWall((self.x + self.speed, self.y), (self.nearestRow, self.nearestCol)): 
                 self.velX = self.speed
@@ -831,6 +869,7 @@ class pacman ():
         
         self.nearestRow = int(((self.y + 8) / 16))
         self.nearestCol = int(((self.x + 8) / 16))
+
 
         # make sure the current velocity will not cause a collision before moving
         if not thisLevel.CheckIfHitWall((self.x + self.velX, self.y + self.velY), (self.nearestRow, self.nearestCol)):
@@ -1527,9 +1566,12 @@ while True:
         thisGame.modeTimer += 1
         
         # FIXME: Eugh.
-        if players[0].pendingMove and players[1].pendingMove:
+        if players[0].pendingMove and ((players[1].pendingMove and players[1].PlayerControlled) or not players[1].PlayerControlled): 
             for i in range(0, 1, 1):
-                ghosts[i].Move()
+                if ghosts[i].PlayerControlled:
+                  ghosts[i].Move()
+                else:
+                  ghosts[i].FollowNextPathWay() 
             thisFruit.Move()
             player.Move()
             
