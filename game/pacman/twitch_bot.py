@@ -17,7 +17,7 @@ class twitch_bot(Thread):
       NICK="lxndkcfi"
       IDENT="pacman"    
       REALNAME="Twitch plays pacman"
-      CHANNEL="#pacman"
+      CHANNEL="#twitchispacman"
 
       readbuffer = ""
       irc=socket.socket()
