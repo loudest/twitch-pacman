@@ -1,11 +1,12 @@
-import twitter, json, memcache
+import twitter, json, redis
 from threading import Thread
 
 class twitter_bot():
 
 	def __init__(self):
 		#Thread.__init__(self)
-		self.r = memcache.Client(['twitch-plays-pacman.yjvmq8.cfg.usw2.cache.amazonaws.com:11211'], debug=0)
+		self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
+		twitch-plays-pac-man
 
 	def searchTweets(self, query):
 		consumer_key = 'ugD4ZKV6GxeLJuiHyosw'
@@ -20,7 +21,8 @@ class twitter_bot():
 			user = status.GetUser()
 			text = status.GetText()
 			value = self.r.get(id);
-			print "id: ".value."\n"
+			print id
+			print value
 			if(value is None): 
 				print "Storing @%s: %s" % (user.GetScreenName(), text)
 				self.r.set(id,'a')
@@ -29,3 +31,4 @@ class twitter_bot():
 
 t = twitter_bot()
 t.searchTweets('#twitchispacman')
+t.searchTweets('#twitchisblinky') 	
