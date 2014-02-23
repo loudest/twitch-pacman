@@ -17,6 +17,7 @@ import pygame, sys, os, random, time
 from pygame.locals import *
 import twitch_bot
 from twitch_bot import twitch_bot
+from twitter_bot import twitter_bot
 from donation_bot import donation_bot
 from datetime import datetime
 
