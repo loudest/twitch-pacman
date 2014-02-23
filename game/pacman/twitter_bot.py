@@ -13,7 +13,7 @@ class twitter_bot():
 		for status in statuses:
 			user = status.GetUser()
 			text = status.GetText()
-			print "%s: %s" % (user.GetScreenName(), text)
+			print "@%s: %s" % (user.GetScreenName(), text)
 
 t = twitter_bot()
 t.searchTweets('#twitchispacman')
