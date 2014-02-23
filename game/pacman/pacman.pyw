@@ -15,15 +15,15 @@
 
 import pygame, sys, os, random, time
 from pygame.locals import *
-import twitch_bot
+from file_io_bot import file_io_bot
 from twitch_bot import twitch_bot
 #from twitter_bot import twitter_bot
 from donation_bot import donation_bot
 from datetime import datetime
 
 # Whether or not to connect to IRC
-SERVER_MODE=False
-TWITTER_MODE = True
+SERVER_MODE = True
+TWITTER_MODE = False
 
 # How long to accept move requests before acting on them.
 TURN_DURATION = 0.5
@@ -300,6 +300,16 @@ class node ():
         self.parent = (-1, -1)
         # node type - 0 for empty space, 1 for wall (optionally, 2 for starting node and 3 for end)
         self.type = -1
+
+# An IO buffer so we can seperate the generation of IO data from writing it.
+class text_file_buffer ():
+    
+    def __init__ (self):
+      self.pacman_move_queue = []
+      self.pacman_score_queue = []
+      self.ghost_move_queue = []
+      self.ghost_score_queue = []
+
         
 class path_finder ():
     
@@ -1564,25 +1574,29 @@ if pygame.joystick.get_count()>0:
   js.init()
 else: js=None
 
+# Create a text file buffer, which we'll purge periodically
+textFileBuffer = text_file_buffer()
+
 # We have several threads:
 # 1.) An IRC thread, which polls for input from IRC and uses it to drive actions. It also writes those actions to file.
 # 2.) A Web Scraper, which pulls data from the donations website and writes it to text.
 threads = []
 if(SERVER_MODE == True):
     #FIXME: This.
-    twitch_thread = twitch_bot(players,thisLevel)
+    twitch_thread = twitch_bot(players, thisLevel, textFileBuffer)
     threads.append(twitch_thread)
     twitch_thread.start()
 
-    # Scraping Thread
-    donations_thread = donation_bot()
-    threads.append(donations_thread)
-    donations_thread.start()
+# IO Thread
+file_io_thread = file_io_bot(textFileBuffer)
+threads.append(file_io_thread)
+file_io_thread.start()
 
 #if(TWITTER_MODE == True):
 #	twitter_thread = twitter_bot(players, thisLevel)
 #	threads.append(twitter_thread)
 #	twitter_thread.start()
+
 
 # Start the turn clock
 lastMoveTime = datetime.now()
@@ -1637,6 +1651,7 @@ while True:
     elif thisGame.mode == 3:
         # game over
         CheckInputs(players)
+        textFileBuffer.ghost_score_queue.append(1)
             
     elif thisGame.mode == 4:
         # waiting to start
@@ -1666,6 +1681,7 @@ while True:
     elif thisGame.mode == 7:
         # flashing maze after finishing level
         thisGame.modeTimer += 1
+        textFileBuffer.pacman_score_queue.append(1)
         
         whiteSet = [10, 30, 50, 70]
         normalSet = [20, 40, 60, 80]
