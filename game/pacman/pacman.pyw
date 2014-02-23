@@ -18,7 +18,6 @@ from pygame.locals import *
 import twitch_bot
 from twitch_bot import twitch_bot
 from donation_bot import donation_bot
-from twitter_bot import twitter_bot
 from datetime import datetime
 
 # Whether or not to connect to IRC
@@ -699,7 +698,7 @@ class ghost ():
             
     def SelectMove(self, currentLevel):
         if self.PlayerControlled():
-          print "Selecting Ghost Moves"
+          print "Selecting Ghost Moves", self.state
           self.move_requests.democracy(self, currentLevel)
         else:
           print 'Ghost state is ', self.state
@@ -1589,16 +1588,8 @@ if(SERVER_MODE == True):
     threads.append(donations_thread)
     donations_thread.start()
 
-<<<<<<< HEAD
-if(TWITTER_MODE == TRUE):
-	twitter_thread = twitter_bot(players, thisLevel)
-	threads.append(twitter_thread)
-	twitter_thread.start()
-=======
-
 # Start the turn clock
 lastMoveTime = datetime.now()
->>>>>>> One second turns (with Animation!)
 
 while True: 
 
