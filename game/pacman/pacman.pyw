@@ -587,14 +587,14 @@ class ghost ():
             
             if thisGame.ghostTimer > 100:
                 # blue
-                screen.blit (ghosts[4].anim[ self.animFrame ], (self.x - thisGame.screenPixelPos[0], self.y - thisGame.screenPixelPos[1]))
+                screen.blit (ghosts[1].anim[ self.animFrame ], (self.x - thisGame.screenPixelPos[0], self.y - thisGame.screenPixelPos[1]))
             else:
                 # blue/white flashing
                 tempTimerI = int(thisGame.ghostTimer / 10)
                 if tempTimerI == 1 or tempTimerI == 3 or tempTimerI == 5 or tempTimerI == 7 or tempTimerI == 9:
-                    screen.blit (ghosts[5].anim[ self.animFrame ], (self.x - thisGame.screenPixelPos[0], self.y - thisGame.screenPixelPos[1]))
+                    screen.blit (ghosts[2].anim[ self.animFrame ], (self.x - thisGame.screenPixelPos[0], self.y - thisGame.screenPixelPos[1]))
                 else:
-                    screen.blit (ghosts[4].anim[ self.animFrame ], (self.x - thisGame.screenPixelPos[0], self.y - thisGame.screenPixelPos[1]))
+                    screen.blit (ghosts[1].anim[ self.animFrame ], (self.x - thisGame.screenPixelPos[0], self.y - thisGame.screenPixelPos[1]))
             
         elif self.state == 3:
             # draw glasses
@@ -656,7 +656,6 @@ class ghost ():
             self.velX = 0
             self.velY = 0
             
-
         # Move Complete!
         self.pendingMove = False
             
@@ -669,7 +668,7 @@ class fruit ():
         self.y = -16
         self.velX = 0
         self.velY = 0
-        self.speed = 1
+        self.speed = 16
         self.active = False
         
         self.bouncei = 0
@@ -865,7 +864,6 @@ class pacman ():
                         ghosts[i].x = ghosts[i].nearestCol * 16
                         ghosts[i].y = ghosts[i].nearestRow * 16
                         ghosts[i].currentPath = path.FindPath( (ghosts[i].nearestRow, ghosts[i].nearestCol), (thisLevel.GetGhostBoxPos()[0]+1, thisLevel.GetGhostBoxPos()[1]) )
-                        ghosts[i].FollowNextPathWay()
                         
                         # set game mode to brief pause after eating
                         thisGame.SetMode( 5 )
@@ -1321,7 +1319,7 @@ class level ():
             ghosts[i].velX = 0
             ghosts[i].velY = 0
             ghosts[i].state = 1
-            ghosts[i].speed = 1
+            ghosts[i].speed = 16
             ghosts[i].Move()
             
             # give each ghost a path to a random spot (containing a pellet)
@@ -1530,10 +1528,10 @@ while True:
         
         # FIXME: Eugh.
         if players[0].pendingMove and players[1].pendingMove:
-            player.Move()
             for i in range(0, 1, 1):
                 ghosts[i].Move()
             thisFruit.Move()
+            player.Move()
             
     elif thisGame.mode == 2:
         # waiting after getting hit by a ghost
