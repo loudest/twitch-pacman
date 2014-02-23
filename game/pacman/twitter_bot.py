@@ -6,7 +6,6 @@ class twitter_bot():
 	def __init__(self):
 		#Thread.__init__(self)
 		self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
-		twitch-plays-pac-man
 
 	def searchTweets(self, query):
 		consumer_key = 'ugD4ZKV6GxeLJuiHyosw'
