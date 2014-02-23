@@ -13,10 +13,11 @@
 # - Added joystick support (configure by changing JS_* constants)
 # - Added a high-score list. Depends on wx for querying the user's name
 
-import pygame, sys, os, random
+import pygame, sys, os, random, time
 from pygame.locals import *
 import twitch_bot
 from twitch_bot import twitch_bot
+from donation_bot import donation_bot
 
 # Whether or not to connect to IRC
 SERVER_MODE=True
@@ -1533,14 +1534,22 @@ thisLevel = level()
 thisLevel.LoadLevel( thisGame.GetLevelNum() )
 
 # start a new thread to get something
-rthreads = []
+# We have several threads:
+# 1.) An IRC thread, which polls for input from IRC and uses it to drive actions. It also writes those actions to file.
+# 2.) A Web Scraper, which pulls data from the donations website and writes it to text.
+
+threads = []
 if(SERVER_MODE == True):
+    #FIXME: This.
     input = input()
-    threads = 1
-    for i in range(threads):
-        t = twitch_bot(input, players,thisLevel)
-        rthreads.append(t)
-        t.start()
+    twitch_thread = twitch_bot(input, players,thisLevel)
+    threads.append(twitch_thread)
+    twitch_thread.start()
+
+    # Scraping Thread
+    donations_thread = donation_bot()
+    threads.append(donations_thread)
+    donations_thread.start()
 
 thisGame.StartNewGame()
 
@@ -1561,6 +1570,10 @@ while True:
     if thisGame.mode == 1:
         # normal gameplay mode
         if CheckInputs(players) is False:
+          for thread in threads:
+            thread.stop_running()
+          # Gugh. 
+          time.sleep(2)
           sys.exit(0)
         
         thisGame.modeTimer += 1
