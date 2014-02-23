@@ -33,31 +33,40 @@ class twitch_bot(Thread):
 			try:
 				data = irc.recv(1024)
 				print data
-				
+
 				if(data.find('PING') != -1):
 					irc.send('PONG '+data.split()[ 1 ]+'\r\n')
 
-				num = random.sample([1, 2, 3, 4],  1)[0]
-				command = 'down'
-				if(num == 1):
-					command = 'right'
-				elif(num == 2):
-					command = 'left'
-				elif(num == 3):
-					command = 'up'
+				#randomization
+				who = random.sample([1,2],1)[0]
 
-				irc.send('PRIVMSG %s :%s\r\n' % (CHANNEL_ONE, command))
+				#pac-man
+				if(who == 1):
+					num = random.sample([1, 2, 3, 4], 1)[0]
+					command = 'down'
+					if(num == 1):
+						command = 'right'
+					elif(num == 2):
+						command = 'left'
+					elif(num == 3):
+						command = 'up'
 
-				num = random.sample([1, 2, 3, 4],  1)[0]
-				command = 'down'
-				if(num == 1):
-					command = 'right'
-				elif(num == 2):
-					command = 'left'
-				elif(num == 3):
-					command = 'up'
+					print ("SENDING PACMAN %s\n" % command)
+					irc.send('PRIVMSG %s :%s\r\n' % (CHANNEL_ONE, command))
 
-				irc.send('PRIVMSG %s :%s\r\n' % (CHANNEL_TWO, command))
+				#blinky
+				else:
+					num = random.sample([1, 2, 3, 4], 1)[0]
+					command = 'down'
+					if(num == 1):
+						command = 'right'
+					elif(num == 2):
+						command = 'left'
+					elif(num == 3):
+						command = 'up'
+
+					print ("SENDING BLINKY %s\n" % command)
+					irc.send('PRIVMSG %s :%s\r\n' % (CHANNEL_TWO, command))
 
 			except Exception, e:
 				continue
@@ -75,15 +84,24 @@ class twitch_bot(Thread):
 def loader():
 
 	threads = []
-	t1 = twitch_bot('blinky1005', '4pbfhq3ltswg8psjeq9i53xfd7a9tjl')
-	threads.append(t1)
-	t1.start()
-	t2 = twitch_bot('blinky1004', 'a7mr3xi912jmf72zhct3afe5ra3d797')
-	threads.append(t2)
-	t2.start()
-	t3 = twitch_bot('blinky1006', 'phkboj8njrdz3x7mthb3krm6bz3rpus')
-	threads.append(t3)
-	t3.start()
+	t = twitch_bot('blinky1005', '4pbfhq3ltswg8psjeq9i53xfd7a9tjl')
+	threads.append(t)
+	t.start()
+	t = twitch_bot('blinky1004', 'a7mr3xi912jmf72zhct3afe5ra3d797')
+	threads.append(t)
+	t.start()
+	t = twitch_bot('blinky1006', 'phkboj8njrdz3x7mthb3krm6bz3rpus')
+	threads.append(t)
+	t.start()
+	t = twitch_bot('blinky1005', '4pbfhq3ltswg8psjeq9i53xfd7a9tjl')
+	threads.append(t)
+	t.start()
+	t = twitch_bot('blinky1006', 'ke5x20xuer1ufo68k6jyulifwblwe3b')
+	threads.append(t)
+	t.start()	
+	t = twitch_bot('blinky1008', 'bk1kjo30101r7fbkpu4y84d3502ar3r')
+	threads.append(t)
+	t.start()	
 
 loader()
 
