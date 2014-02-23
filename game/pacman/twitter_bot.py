@@ -21,13 +21,19 @@ class twitter_bot(Thread):
 		self.access_token = '2356976360-D8LrSAJ46ZsrCtvS34jFFDbm8GfqdUB4EvhUy4o'
 		self.access_token_secret = 'fpuWA5O53hNHtYF4jgIvJ4uEugwOOcWEAVSEaIuwkztLb'
 
+	def run(self):
+		self.searchTweets()
+
+	def stop_running(self):
+		self.running = False
+		print "Twitter Bot set to shutdown"
 
 	def searchTweets(self):
 
 		api = twitter.Api(	self.consumer_key, self.consumer_secret, self.access_token, self.access_token_secret)
 
-      	while self.running:
-        	try:
+	  	while True:
+			try:
 				pacman = api.GetSearch('#twitchispacman')
 				for status in pacman:
 					id = str(status.GetId())
@@ -36,7 +42,7 @@ class twitter_bot(Thread):
 					value = self.r.get(id);
 					data = text.lower()
 					if(value is None): 
-						#print "Storing @%s: %s" % (user.GetScreenName(), text)
+						print "Storing @%s: %s" % (user.GetScreenName(), text)
 						self.r.set(id,'a')
 						if(data.find ('right') != -1):
 						 self.players[0].QueueMove(Directions.RIGHT, self.level)
@@ -48,14 +54,15 @@ class twitter_bot(Thread):
 						 self.players[0].QueueMove(Directions.DOWN, self.level)
 
 				blinky = api.GetSearch('#twitchisblinky')
-				for status in pacman:
+				for status in blinky:
 					id = str(status.GetId())
 					user = status.GetUser()
 					text = status.GetText()
-					value = self.r.get(id);
+					#value = self.r.get(id);
+					value = None
 					data = text.lower()
 					if(value is None): 
-						#print "Storing @%s: %s" % (user.GetScreenName(), text)
+						print "Command @%s: %s\n" % (user.GetScreenName(), text)
 						self.r.set(id,'a')
 						if(data.find ('right') != -1):
 						 self.players[1].QueueMove(Directions.RIGHT, self.level)
@@ -65,22 +72,8 @@ class twitter_bot(Thread):
 						 self.players[1].QueueMove(Directions.UP, self.level)
 						elif(data.find('down') != -1):
 						 self.players[1].QueueMove(Directions.DOWN, self.level)
-
-				time.sleep(15)
-
+			
 			except Exception, e:
-
-				self.running = False
-				break;
-
-	def run(self):
-	  self.searchTweets()
-
-	def stop_running(self):
-	  self.running = False
-	  print "Twitch Bot set to shutdown"
-
-
-t = twitter_bot()
-t.searchTweets('#twitchispacman')
-t.searchTweets('#twitchisblinky') 	
+				continue
+			
+			time.sleep(10)
