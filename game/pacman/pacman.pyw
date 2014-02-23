@@ -1585,7 +1585,7 @@ if(SERVER_MODE == True):
     threads.append(donations_thread)
     donations_thread.start()
 
-if(TWITTER_MODE == TRUE):
+if(TWITTER_MODE == True):
 	twitter_thread = twitter_bot(players, thisLevel)
 	threads.append(twitter_thread)
 	twitter_thread.start()
