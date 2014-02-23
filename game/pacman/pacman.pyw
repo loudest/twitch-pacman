@@ -18,11 +18,14 @@ from pygame.locals import *
 import twitch_bot
 from twitch_bot import twitch_bot
 from donation_bot import donation_bot
-from twitter_bot import twitter_bot
+from datetime import datetime
 
 # Whether or not to connect to IRC
 SERVER_MODE=True
 TWITTER_MODE = False
+
+# How long to accept move requests before acting on them.
+TURN_DURATION = 1
 
 # WIN???
 SCRIPT_PATH=sys.path[0]
@@ -66,11 +69,8 @@ snd_extralife = pygame.mixer.Sound(os.path.join(SCRIPT_PATH,"res","sounds","extr
 
 ghostcolor = {}
 ghostcolor[0] = (255, 0, 0, 255)
-ghostcolor[1] = (255, 128, 255, 255)
-ghostcolor[2] = (128, 255, 255, 255)
-ghostcolor[3] = (255, 128, 0, 255)
-ghostcolor[4] = (50, 50, 255, 255) # blue, vulnerable ghost
-ghostcolor[5] = (255, 255, 255, 255) # white, flashing ghost
+ghostcolor[1] = (50, 50, 255, 255) # blue, vulnerable ghost
+ghostcolor[2] = (255, 255, 255, 255) # white, flashing ghost
 
 def enum(**enums):
     return type('Enum', (), enums)
@@ -507,16 +507,85 @@ class path_finder ():
             
                 thisTile = self.GetType((row, col))
                 screen.blit (tileIDImage[ thisTile ], (col * 32, row * 32))
-        
+
+class move_requests ():
+
+   def __init__(self):
+      self.right = 0
+      self.left = 0
+      self.up = 0
+      self.down = 0
+
+   def reset(self):
+      self.right = 0
+      self.left = 0
+      self.up = 0
+      self.down = 0
+
+   # Requests a move
+   def request_move(self, player, currentLevel, direction):
+
+      if (direction == Directions.RIGHT):
+          if not currentLevel.CheckIfHitWall((player.x + 16, player.y), (player.nearestRow, player.nearestCol)): 
+              self.right += 1
+              print "Move right requested"
+              
+      elif (direction == Directions.LEFT):
+          if not currentLevel.CheckIfHitWall((player.x - 16, player.y), (player.nearestRow, player.nearestCol)): 
+              self.left += 1
+              print "Move left requested"
+          
+      elif (direction == Directions.DOWN):
+          if not currentLevel.CheckIfHitWall((player.x, player.y + 16), (player.nearestRow, player.nearestCol)): 
+              self.down += 1
+              print "Move down requested"
+
+      elif (direction == Directions.UP):
+          if not currentLevel.CheckIfHitWall((player.x, player.y - 16), (player.nearestRow, player.nearestCol)):
+              self.up += 1
+              print "Move up requested"
+      else:
+          print "Move", direction, "requested, but not queued as it would be invalid"
+
+   # Returns the most highly voted value
+   def democracy(self, player, currentLevel):
+      if (self.left >= self.right) and (self.left >= self.up) and (self.left >= self.down) and (self.left > 0):
+        if not currentLevel.CheckIfHitWall((player.x - 16, player.y), (player.nearestRow, player.nearestCol)): 
+          print "Setting velocity left"
+          player.velX = -player.speed
+          player.velY = 0
+      elif (self.right >= self.left) and (self.right >= self.up) and (self.right >= self.down) and (self.right > 0):
+        if not currentLevel.CheckIfHitWall((player.x + 16, player.y), (player.nearestRow, player.nearestCol)): 
+          print "Setting velocity left"
+          player.velX = player.speed
+          player.velY = 0
+      elif (self.up >= self.right) and (self.up >= self.left) and (self.up >= self.down) and (self.up > 0):
+        if not currentLevel.CheckIfHitWall((player.x, player.y - 16), (player.nearestRow, player.nearestCol)): 
+          print "Setting velocity up"
+          player.velX = 0
+          player.velY = -player.speed
+      elif (self.down >= self.right) and (self.down >= self.up) and (self.down >= self.left) and (self.down > 0):
+        if not currentLevel.CheckIfHitWall((player.x, player.y + 16), (player.nearestRow, player.nearestCol)): 
+          print "Setting velocity down"
+          player.velX = 0
+          player.velY = player.speed
+      else:
+        player.velX = 0
+        player.velY = 0
+        print "No valid moves voted. Standing still!"
+
+      # Clear the votes for next time
+      self.reset()
+
 class ghost ():
     def __init__ (self, ghostID):
         self.x = 0
         self.y = 0
         self.velX = 0
         self.velY = 0
-        self.speed = 16
+        self.speed = 2
 
-        self.pendingMove = False
+        self.move_requests = move_requests()
         
         self.nearestRow = 0
         self.nearestCol = 0
@@ -550,7 +619,7 @@ class ghost ():
         self.animDelay = 0
     
     def PlayerControlled(self):
-        return bool(self.state is not 1)
+        return bool(self.state == 1)
         
     def Draw (self):
         
@@ -622,53 +691,34 @@ class ghost ():
             self.animDelay = 0
 
     def QueueMove (self, direction, currentLevel):
-
-        if (direction == Directions.RIGHT):
-            if not currentLevel.CheckIfHitWall((self.x + self.speed, self.y), (self.nearestRow, self.nearestCol)): 
-                self.velX = self.speed
-                self.velY = 0
-                self.pendingMove = True
-                print "Move right queued for ghost"
-                
-        elif (direction == Directions.LEFT):
-            if not currentLevel.CheckIfHitWall((self.x - self.speed, self.y), (self.nearestRow, self.nearestCol)): 
-                self.velX = -self.speed
-                self.velY = 0
-                self.pendingMove = True
-                print "Move left queued for ghost"
+        self.move_requests.request_move(self, currentLevel, direction)
             
-        elif (direction == Directions.DOWN):
-            if not currentLevel.CheckIfHitWall((self.x, self.y + self.speed), (self.nearestRow, self.nearestCol)): 
-                self.velX = 0
-                self.velY = self.speed
-                self.pendingMove = True
-                print "Move down queued for ghost"
-
-        elif (direction == Directions.UP):
-            if not currentLevel.CheckIfHitWall((self.x, self.y - self.speed), (self.nearestRow, self.nearestCol)):
-                self.velX = 0
-                self.velY = -self.speed
-                self.pendingMove = True
-                print "Move up queued for ghost"
-            
-    def Move (self):
-        
-        self.nearestRow = int(((self.y + 8) / 16))
-        self.nearestCol = int(((self.x + 8) / 16))
-
-        # make sure the current velocity will not cause a collision before moving
-        if not thisLevel.CheckIfHitWall((self.x + self.velX, self.y + self.velY), (self.nearestRow, self.nearestCol)):
-            # it's ok to Move
-            self.x += self.velX
-            self.y += self.velY
-        
+    def SelectMove(self, currentLevel):
+        if self.PlayerControlled():
+          print "Selecting Ghost Moves", self.state
+          self.move_requests.democracy(self, currentLevel)
         else:
-            # we're going to hit a wall -- stop moving
-            self.velX = 0
-            self.velY = 0
-            
-        # Move Complete!
-        self.pendingMove = False
+          print 'Ghost state is ', self.state
+
+    def Move (self):
+          self.nearestRow = int(((self.y + 8) / 16))
+          self.nearestCol = int(((self.x + 8) / 16))
+
+          # make sure the current velocity will not cause a collision before moving
+          if not thisLevel.CheckIfHitWall((self.x + self.velX, self.y + self.velY), (self.nearestRow, self.nearestCol)):
+              # it's ok to Move
+              self.x += self.velX
+              self.y += self.velY
+
+              # If we're lined up with the grid now and under player control, stop
+              if (self.x % 16) == 0 and (self.y % 16) == 0 and self.PlayerControlled():
+                self.velX = 0
+                self.velY = 0
+          
+          else:
+              # we're going to hit a wall -- stop moving
+              self.velX = 0
+              self.velY = 0
 
     def FollowNextPathWay (self):
         
@@ -712,7 +762,7 @@ class fruit ():
         self.y = -16
         self.velX = 0
         self.velY = 0
-        self.speed = 16
+        self.speed = 2
         self.active = False
         
         self.bouncei = 0
@@ -799,7 +849,6 @@ class fruit ():
                     thisGame.fruitTimer = 0
             
     def FollowNextPathWay (self):
-        
 
         # only follow this pathway if there is a possible path found!
         if not self.currentPath == False:
@@ -821,8 +870,9 @@ class pacman ():
         self.y = 0
         self.velX = 0
         self.velY = 0
-        self.speed = 16
-        self.pendingMove = False
+        self.speed = 2
+
+        self.move_requests = move_requests()
         
         self.nearestRow = 0
         self.nearestCol = 0
@@ -847,52 +897,33 @@ class pacman ():
         self.pelletSndNum = 0
 
     def QueueMove (self, direction, currentLevel):
+        self.move_requests.request_move(self, currentLevel, direction)
 
-        if (direction == Directions.RIGHT):
-            if not currentLevel.CheckIfHitWall((self.x + self.speed, self.y), (self.nearestRow, self.nearestCol)): 
-                self.velX = self.speed
-                self.velY = 0
-                self.pendingMove = True
-                print 'Move right queued for Pac-Man'
-                
-        elif (direction == Directions.LEFT):
-            if not currentLevel.CheckIfHitWall((self.x - self.speed, self.y), (self.nearestRow, self.nearestCol)): 
-                self.velX = -self.speed
-                self.velY = 0
-                self.pendingMove = True
-                print 'Move left queued for Pac-Man'
-            
-        elif (direction == Directions.DOWN):
-            if not currentLevel.CheckIfHitWall((self.x, self.y + self.speed), (self.nearestRow, self.nearestCol)): 
-                self.velX = 0
-                self.velY = self.speed
-                self.pendingMove = True
-                print 'Move down queued for Pac-Man'
-            
-        elif (direction == Directions.UP):
-            if not currentLevel.CheckIfHitWall((self.x, self.y - self.speed), (self.nearestRow, self.nearestCol)):
-                self.velX = 0
-                self.velY = -self.speed
-                self.pendingMove = True
-                print 'Move up queued for Pac-Man'
+    def SelectMove(self, currentLevel):
+        print "Selecting Pac-Man Move"
+        self.move_requests.democracy(self, currentLevel)
         
     def Move (self):
         
         self.nearestRow = int(((self.y + 8) / 16))
         self.nearestCol = int(((self.x + 8) / 16))
 
-
         # make sure the current velocity will not cause a collision before moving
         if not thisLevel.CheckIfHitWall((self.x + self.velX, self.y + self.velY), (self.nearestRow, self.nearestCol)):
             # it's ok to Move
             self.x += self.velX
             self.y += self.velY
+
+            # If we're lined up with the grid now, stop
+            if (self.x % 16) == 0 and (self.y % 16) == 0:
+              self.velX = 0
+              self.velY = 0
             
             # check for collisions with other tiles (pellets, etc)
             thisLevel.CheckIfHitSomething((self.x, self.y), (self.nearestRow, self.nearestCol))
             
             # check for collisions with the ghosts
-            for i in range(0, 1, 1):
+            for i in range(0, 3, 1):
                 if thisLevel.CheckIfHit( (self.x, self.y), (ghosts[i].x, ghosts[i].y), 8):
                     # hit a ghost
                     
@@ -937,7 +968,7 @@ class pacman ():
             thisGame.ghostTimer -= 1
             
             if thisGame.ghostTimer == 0:
-                for i in range(0, 1, 1):
+                for i in range(0, 3, 1):
                     if ghosts[i].state == 2:
                         ghosts[i].state = 1
                 self.ghostValue = 0
@@ -965,9 +996,6 @@ class pacman ():
             
         if thisGame.fruitScoreTimer > 0:
             thisGame.fruitScoreTimer -= 1
-
-        # Move Complete!
-        self.pendingMove = False
 
         
     def Draw (self):
@@ -1099,7 +1127,7 @@ class level ():
                         thisGame.ghostValue = 200
                         
                         thisGame.ghostTimer = 360
-                        for i in range(0, 1, 1):
+                        for i in range(0, 3, 1):
                             if ghosts[i].state == 1:
                                 ghosts[i].state = 2
                         
@@ -1361,7 +1389,7 @@ class level ():
         
     def Restart (self):
         
-        for i in range(0, 1, 1):
+        for i in range(0, 3, 1):
             # move ghosts back to home
 
             ghosts[i].x = ghosts[i].homeX
@@ -1369,7 +1397,7 @@ class level ():
             ghosts[i].velX = 0
             ghosts[i].velY = 0
             ghosts[i].state = 1
-            ghosts[i].speed = 16
+            ghosts[i].speed = 2
             ghosts[i].Move()
             
             # give each ghost a path to a random spot (containing a pellet)
@@ -1510,7 +1538,7 @@ path = path_finder()
 
 # create ghost objects
 ghosts = {}
-for i in range(0, 2, 1):
+for i in range(0, 3, 1):
     # remember, ghost[4] is the blue, vulnerable ghost
     ghosts[i] = ghost(i)
 
@@ -1557,10 +1585,8 @@ if(SERVER_MODE == True):
     threads.append(donations_thread)
     donations_thread.start()
 
-if(TWITTER_MODE == TRUE):
-	twitter_thread = twitter_bot(players, thisLevel)
-	threads.append(twitter_thread)
-	twitter_thread.start()
+# Start the turn clock
+lastMoveTime = datetime.now()
 
 while True: 
 
@@ -1577,16 +1603,22 @@ while True:
           sys.exit(0)
         
         thisGame.modeTimer += 1
-        
-        # FIXME: Eugh.
-        if players[0].pendingMove and ((players[1].pendingMove and players[1].PlayerControlled) or not players[1].PlayerControlled): 
-            for i in range(0, 1, 1):
-                if ghosts[i].PlayerControlled:
-                  ghosts[i].Move()
-                else:
-                  ghosts[i].FollowNextPathWay() 
-            thisFruit.Move()
-            player.Move()
+
+        # If it's the start of a new turn, select our moves
+        if ((datetime.now() - lastMoveTime).seconds >= TURN_DURATION):
+          # Select our moves
+          player.SelectMove(thisLevel)
+          for i in range(0, 3, 1):
+            ghosts[i].SelectMove(thisLevel)
+
+          # Reset the clock
+          lastMoveTime = datetime.now()
+
+        # Act on moves already in progress
+        player.Move()
+        for i in range(0, 3, 1):
+          ghosts[i].Move()
+        thisFruit.Move()
             
     elif thisGame.mode == 2:
         # waiting after getting hit by a ghost
@@ -1671,7 +1703,7 @@ while True:
             if thisGame.modeTimer % 2 == 0:
                 thisGame.DrawNumber (2500, (thisFruit.x - thisGame.screenPixelPos[0] - 16, thisFruit.y - thisGame.screenPixelPos[1] + 4))
 
-        for i in range(0, 1, 1):
+        for i in range(0, 3, 1):
             ghosts[i].Draw()
         thisFruit.Draw()
         player.Draw()
