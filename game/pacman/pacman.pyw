@@ -21,7 +21,6 @@ from twitch_bot import twitch_bot
 # Whether or not to connect to IRC
 SERVER_MODE=True
 
-
 # WIN???
 SCRIPT_PATH=sys.path[0]
 
@@ -513,8 +512,8 @@ class ghost ():
         self.velX = 0
         self.velY = 0
         self.speed = 16
-        # True always for now - once the ghost is controllable, should only change with new inputs
-        self.pendingMove = True
+
+        self.pendingMove = False
         
         self.nearestRow = 0
         self.nearestCol = 0
@@ -643,68 +642,24 @@ class ghost ():
             
     def Move (self):
         
-
-        self.x += self.velX
-        self.y += self.velY
-        
         self.nearestRow = int(((self.y + 8) / 16))
         self.nearestCol = int(((self.x + 8) / 16))
 
-        if (self.x % 16) == 0 and (self.y % 16) == 0:
-            # if the ghost is lined up with the grid again
-            # meaning, it's time to go to the next path item
+        # make sure the current velocity will not cause a collision before moving
+        if not thisLevel.CheckIfHitWall((self.x + self.velX, self.y + self.velY), (self.nearestRow, self.nearestCol)):
+            # it's ok to Move
+            self.x += self.velX
+            self.y += self.velY
+        
+        else:
+            # we're going to hit a wall -- stop moving
+            self.velX = 0
+            self.velY = 0
             
-            if (self.currentPath):
-                self.currentPath = self.currentPath[1:]
-                self.FollowNextPathWay()
-        
-            else:
-                self.x = self.nearestCol * 16
-                self.y = self.nearestRow * 16
-            
-                # chase pac-man
-                self.currentPath = path.FindPath( (self.nearestRow, self.nearestCol), (player.nearestRow, player.nearestCol) )
-                self.FollowNextPathWay()
-            
-    def FollowNextPathWay (self):
-        
-        # print "Ghost " + str(self.id) + " rem: " + self.currentPath
-        
-        # only follow this pathway if there is a possible path found!
-        if not self.currentPath == False:
-        
-            if len(self.currentPath) > 0:
-                if self.currentPath[0] == "L":
-                    (self.velX, self.velY) = (-self.speed, 0)
-                elif self.currentPath[0] == "R":
-                    (self.velX, self.velY) = (self.speed, 0)
-                elif self.currentPath[0] == "U":
-                    (self.velX, self.velY) = (0, -self.speed)
-                elif self.currentPath[0] == "D":
-                    (self.velX, self.velY) = (0, self.speed)
-                    
-            else:
-                # this ghost has reached his destination!!
-                
-                if not self.state == 3:
-                    # chase pac-man
-                    self.currentPath = path.FindPath( (self.nearestRow, self.nearestCol), (player.nearestRow, player.nearestCol) )
-                    self.FollowNextPathWay()
-                
-                else:
-                    # glasses found way back to ghost box
-                    self.state = 1
-                    self.speed = self.speed / 4
-                    
-                    # give ghost a path to a random spot (containing a pellet)
-                    (randRow, randCol) = (0, 0)
 
-                    while not thisLevel.GetMapTile((randRow, randCol)) == tileID[ 'pellet' ] or (randRow, randCol) == (0, 0):
-                        randRow = random.randint(1, thisLevel.lvlHeight - 2)
-                        randCol = random.randint(1, thisLevel.lvlWidth - 2)
-
-                    self.currentPath = path.FindPath( (self.nearestRow, self.nearestCol), (randRow, randCol) )
-                    self.FollowNextPathWay()
+        # Move Complete!
+        self.pendingMove = False
+            
 
 class fruit ():
     def __init__ (self):
@@ -1378,7 +1333,6 @@ class level ():
             
             # print "Ghost " + str(i) + " headed towards " + str((randRow, randCol))
             ghosts[i].currentPath = path.FindPath( (ghosts[i].nearestRow, ghosts[i].nearestCol), (randRow, randCol) )
-            ghosts[i].FollowNextPathWay()
             
         thisFruit.active = False
             
@@ -1412,22 +1366,36 @@ class input() :
         elif (input == "w"):
             character.QueueMove(Directions.UP, thisLevel)
 
-def CheckInputs(character, externalInput = None):
+def CheckInputs(players, externalInput = None):
     if thisGame.mode == 1:
-        if (externalInput is not None and externalInput == "d") or pygame.key.get_pressed()[ pygame.K_RIGHT ] or (js!=None and js.get_axis(JS_XAXIS)>0):
-          character.QueueMove(Directions.RIGHT, thisLevel)
+        # Pacman recieves WASD and the arrows
+        if (externalInput is not None and externalInput == "d") or pygame.key.get_pressed()[ pygame.K_d ] or (js!=None and js.get_axis(JS_XAXIS)>0):
+          players[0].QueueMove(Directions.RIGHT, thisLevel)
                 
-        elif (externalInput is not None and externalInput == "a") or pygame.key.get_pressed()[ pygame.K_LEFT ] or (js!=None and js.get_axis(JS_XAXIS)<0):
-          character.QueueMove(Directions.LEFT, thisLevel)
+        elif (externalInput is not None and externalInput == "a") or pygame.key.get_pressed()[ pygame.K_a ] or (js!=None and js.get_axis(JS_XAXIS)<0):
+          players[0].QueueMove(Directions.LEFT, thisLevel)
             
-        elif (externalInput is not None and externalInput == "s") or pygame.key.get_pressed()[ pygame.K_DOWN ] or (js!=None and js.get_axis(JS_YAXIS)>0):
-          character.QueueMove(Directions.DOWN, thisLevel)
+        elif (externalInput is not None and externalInput == "s") or pygame.key.get_pressed()[ pygame.K_s ] or (js!=None and js.get_axis(JS_YAXIS)>0):
+          players[0].QueueMove(Directions.DOWN, thisLevel)
             
-        elif (externalInput is not None and externalInput == "w") or pygame.key.get_pressed()[ pygame.K_UP ] or (js!=None and js.get_axis(JS_YAXIS)<0):
-          character.QueueMove(Directions.UP, thisLevel)
+        elif (externalInput is not None and externalInput == "w") or pygame.key.get_pressed()[ pygame.K_w ] or (js!=None and js.get_axis(JS_YAXIS)<0):
+          players[0].QueueMove(Directions.UP, thisLevel)
+
+        # The ghost recieves IJKL (Look at your right hand!)
+        elif (externalInput is not None and externalInput == "l") or pygame.key.get_pressed()[ pygame.K_l ]:
+          players[1].QueueMove(Directions.RIGHT, thisLevel)
+                
+        elif (externalInput is not None and externalInput == "j") or pygame.key.get_pressed()[ pygame.K_j ]:
+          players[1].QueueMove(Directions.LEFT, thisLevel)
+            
+        elif (externalInput is not None and externalInput == "k") or pygame.key.get_pressed()[ pygame.K_k ]:
+          players[1].QueueMove(Directions.DOWN, thisLevel)
+            
+        elif (externalInput is not None and externalInput == "i") or pygame.key.get_pressed()[ pygame.K_i ]:
+          players[1].QueueMove(Directions.UP, thisLevel)
                 
     if pygame.key.get_pressed()[ pygame.K_ESCAPE ]:
-        sys.exit(0)
+        return False
             
     elif thisGame.mode == 3:
         if pygame.key.get_pressed()[ pygame.K_RETURN ] or (js!=None and js.get_button(JS_STARTBUTTON)):
@@ -1511,6 +1479,9 @@ ghosts = {}
 for i in range(0, 2, 1):
     # remember, ghost[4] is the blue, vulnerable ghost
     ghosts[i] = ghost(i)
+
+# Players is the array of all "real" players
+players = [ player, ghosts[0] ]
     
 # create piece of fruit
 thisFruit = fruit() 
@@ -1525,12 +1496,13 @@ thisLevel = level()
 thisLevel.LoadLevel( thisGame.GetLevelNum() )
 
 # start a new thread to get something
+rthreads = []
 if(SERVER_MODE == True):
     input = input()
     rthreads = []
     threads = 1
     for i in range(threads):
-        t = twitch_bot(input, player,thisLevel)
+        t = twitch_bot(input, players,thisLevel)
         rthreads.append(t)
         t.start()
 
@@ -1552,10 +1524,13 @@ while True:
     
     if thisGame.mode == 1:
         # normal gameplay mode
-        CheckInputs(player)
+        if CheckInputs(players) is False:
+          sys.exit(0)
         
         thisGame.modeTimer += 1
-        if player.pendingMove and ghosts[i].pendingMove:
+        
+        # FIXME: Eugh.
+        if players[0].pendingMove and players[1].pendingMove:
             player.Move()
             for i in range(0, 1, 1):
                 ghosts[i].Move()
@@ -1578,7 +1553,7 @@ while True:
                 
     elif thisGame.mode == 3:
         # game over
-        CheckInputs(player)
+        CheckInputs(players)
             
     elif thisGame.mode == 4:
         # waiting to start
