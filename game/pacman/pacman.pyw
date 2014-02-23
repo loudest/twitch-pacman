@@ -22,8 +22,8 @@ from donation_bot import donation_bot
 from datetime import datetime
 
 # Whether or not to connect to IRC
-SERVER_MODE=True
-TWITTER_MODE = False
+SERVER_MODE=False
+TWITTER_MODE = True
 
 # How long to accept move requests before acting on them.
 TURN_DURATION = 1
