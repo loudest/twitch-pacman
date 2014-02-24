@@ -1,0 +1,739 @@
+   UP | myklhenn
+RIGHT | gabriel10293
+ DOWN | freakoutpa..
+   UP | blinky1005
+RIGHT | flyerhm
+   UP | blinky1006
+ DOWN | preston_wilson
+RIGHT | onlylosers..
+RIGHT | blinky1005
+ DOWN | blinky1004
+ LEFT | flyerhm
+ DOWN | gabriel10293
+ LEFT | freakoutpa..
+ LEFT | blinky1005
+ LEFT | blinky1008
+   UP | blinky1005
+ LEFT | gabriel10293
+   UP | freakoutpa..
+   UP | gabriel10293
+ DOWN | blinky1005
+ DOWN | blinky1006
+RIGHT | flyerhm
+ LEFT | onlylosers..
+   UP | preston_wilson
+ DOWN | freakoutpa..
+   UP | blinky1004
+   UP | onlylosers..
+ DOWN | preston_wilson
+ LEFT | freakoutpa..
+   UP | blinky1005
+RIGHT | blinky1008
+   UP | flyerhm
+RIGHT | onlylosers..
+RIGHT | freakoutpa..
+ LEFT | freakoutpa..
+ DOWN | blinky1005
+   UP | preston_wilson
+   UP | onlylosers..
+ LEFT | gabriel10293
+ LEFT | blinky1005
+RIGHT | blinky1006
+ LEFT | flyerhm
+   UP | freakoutpa..
+ DOWN | preston_wilson
+ LEFT | blinky1008
+   UP | blinky1005
+RIGHT | blinky1008
+ DOWN | onlylosers..
+ DOWN | blinky1005
+ DOWN | blinky1004
+   UP | gabriel10293
+   UP | onlylosers..
+RIGHT | freakoutpa..
+ LEFT | blinky1008
+ DOWN | gabriel10293
+ LEFT | blinky1004
+RIGHT | flyerhm
+ DOWN | blinky1008
+RIGHT | blinky1005
+RIGHT | blinky1004
+   UP | flyerhm
+   UP | gabriel10293
+   UP | preston_wilson
+ LEFT | blinky1008
+   UP | blinky1004
+   UP | blinky1006
+ DOWN | onlylosers..
+   UP | freakoutpa..
+   UP | blinky1005
+ LEFT | blinky1004
+ DOWN | flyerhm
+RIGHT | freakoutpa..
+ DOWN | blinky1005
+ LEFT | flyerhm
+ DOWN | freakoutpa..
+RIGHT | preston_wilson
+   UP | blinky1005
+ DOWN | blinky1006
+   UP | onlylosers..
+ LEFT | freakoutpa..
+   UP | blinky1006
+RIGHT | flyerhm
+   UP | freakoutpa..
+RIGHT | blinky1004
+   UP | flyerhm
+ DOWN | blinky1006
+ DOWN | freakoutpa..
+RIGHT | blinky1008
+ LEFT | blinky1006
+ DOWN | blinky1004
+RIGHT | gabriel10293
+ LEFT | freakoutpa..
+ DOWN | onlylosers..
+   UP | blinky1005
+ LEFT | blinky1008
+RIGHT | blinky1005
+   UP | preston_wilson
+   UP | blinky1004
+   UP | gabriel10293
+RIGHT | onlylosers..
+ DOWN | blinky1004
+RIGHT | blinky1006
+   UP | freakoutpa..
+ DOWN | blinky1008
+   UP | blinky1005
+ DOWN | flyerhm
+ DOWN | freakoutpa..
+RIGHT | preston_wilson
+ LEFT | blinky1005
+ DOWN | gabriel10293
+RIGHT | flyerhm
+ LEFT | blinky1006
+ LEFT | onlylosers..
+   UP | blinky1006
+ DOWN | preston_wilson
+ LEFT | freakoutpa..
+ LEFT | gabriel10293
+ LEFT | blinky1008
+RIGHT | blinky1008
+ LEFT | preston_wilson
+   UP | freakoutpa..
+ DOWN | onlylosers..
+ DOWN | blinky1005
+   UP | onlylosers..
+ LEFT | freakoutpa..
+ DOWN | blinky1004
+   UP | freakoutpa..
+RIGHT | freakoutpa..
+   UP | blinky1005
+ LEFT | blinky1004
+ DOWN | flyerhm
+ LEFT | blinky1005
+ LEFT | freakoutpa..
+ DOWN | gabriel10293
+   UP | blinky1005
+ DOWN | preston_wilson
+ DOWN | onlylosers..
+   UP | freakoutpa..
+   UP | preston_wilson
+   UP | blinky1008
+ DOWN | blinky1004
+   UP | blinky1006
+ LEFT | flyerhm
+ DOWN | blinky1005
+ LEFT | blinky1008
+   UP | gabriel10293
+   UP | onlylosers..
+   UP | blinky1005
+ LEFT | freakoutpa..
+RIGHT | onlylosers..
+ DOWN | blinky1005
+RIGHT | blinky1004
+ DOWN | blinky1008
+ LEFT | preston_wilson
+   UP | blinky1004
+   UP | flyerhm
+ LEFT | blinky1006
+ DOWN | freakoutpa..
+RIGHT | freakoutpa..
+ LEFT | onlylosers..
+RIGHT | blinky1005
+   UP | blinky1006
+ DOWN | freakoutpa..
+ DOWN | preston_wilson
+   UP | onlylosers..
+ DOWN | blinky1005
+ LEFT | freakoutpa..
+ LEFT | flyerhm
+ LEFT | preston_wilson
+   UP | freakoutpa..
+ LEFT | blinky1006
+RIGHT | flyerhm
+RIGHT | blinky1006
+ DOWN | onlylosers..
+ DOWN | freakoutpa..
+RIGHT | blinky1005
+RIGHT | preston_wilson
+ LEFT | onlylosers..
+RIGHT | blinky1008
+ LEFT | freakoutpa..
+ DOWN | blinky1005
+RIGHT | flyerhm
+   UP | onlylosers..
+RIGHT | gabriel10293
+ LEFT | blinky1004
+   UP | gabriel10293
+RIGHT | freakoutpa..
+ DOWN | blinky1008
+   UP | freakoutpa..
+ LEFT | flyerhm
+ LEFT | onlylosers..
+ DOWN | freako..
+ DOWN | gabrie..
+   UP | blinky1005
+   UP | presto..
+ DOWN | blinky1008
+RIGHT | blinky1005
+RIGHT | gabrie..
+ LEFT | blinky1006
+ LEFT | presto..
+RIGHT | freako..
+ DOWN | blinky1005
+ DOWN | blinky1005
+   UP | freako..
+   UP | blinky1004
+   UP | blinky1008
+   UP | blinky1005
+ DOWN | freako..
+ LEFT | blinky1004
+ DOWN | blinky1006
+   UP | myklhenn
+ LEFT | blinky1005
+ LEFT | gabrie..
+RIGHT | blinky1004
+   UP | blinky1006
+RIGHT | blinky1008
+   UP | freako..
+RIGHT | gabrie..
+ DOWN | blinky1004
+RIGHT | onlylo..
+RIGHT | presto..
+   UP | blinky1008
+   UP | gabrie..
+   UP | onlylo..
+ LEFT | freako..
+RIGHT | blinky1008
+ DOWN | blinky1005
+RIGHT | gabrie..
+ DOWN | flyerhm
+ DOWN | blinky1006
+ DOWN | onlylo..
+ LEFT | blinky1005
+ DOWN | gabrie..
+   UP | blinky1004
+   UP | flyerhm
+ LEFT | blinky1006
+   UP | presto..
+   UP | freako..
+RIGHT | flyerhm
+RIGHT | onlylo..
+RIGHT | presto..
+ DOWN | blinky1008
+RIGHT | blinky1005
+ LEFT | freako..
+ LEFT | blinky1004
+ LEFT | blinky1005
+   UP | gabrie..
+ DOWN | blinky1006
+   UP | onlylo..
+ LEFT | presto..
+RIGHT | freako..
+RIGHT | blinky1005
+ LEFT | onlylo..
+RIGHT | freako..
+   UP | freako..
+ LEFT | freako..
+ DOWN | blinky1005
+RIGHT | gabrie..
+ DOWN | onlylo..
+ DOWN | presto..
+   UP | freako..
+RIGHT | blinky1008
+RIGHT | blinky1005
+RIGHT | blinky1004
+   UP | onlylo..
+ LEFT | freako..
+   UP | blinky1005
+RIGHT | presto..
+RIGHT | onlylo..
+   UP | freako..
+ LEFT | blinky1008
+ DOWN | gabrie..
+ LEFT | blinky1004
+ DOWN | flyerhm
+ LEFT | presto..
+RIGHT | freako..
+ DOWN | blinky1005
+ LEFT | blinky1006
+   UP | flyerhm
+ LEFT | gabrie..
+RIGHT | presto..
+ LEFT | onlylo..
+ DOWN | blinky1004
+ DOWN | gabrie..
+   UP | blinky1004
+RIGHT | flyerhm
+   UP | blinky1006
+   UP | presto..
+   UP | freako..
+ LEFT | blinky1005
+ LEFT | freako..
+   UP | onlylo..
+ DOWN | blinky1006
+ DOWN | blinky1005
+ DOWN | freako..
+RIGHT | presto..
+ DOWN | presto..
+ LEFT | onlylo..
+RIGHT | freako..
+   UP | blinky1005
+ DOWN | blinky1005
+RIGHT | blinky1004
+RIGHT | onlylo..
+ LEFT | gabrie..
+ LEFT | blinky1004
+   UP | presto..
+ DOWN | blinky1004
+ LEFT | blinky1005
+ LEFT | freako..
+   UP | onlylo..
+RIGHT | blinky1006
+RIGHT | freako..
+RIGHT | flyerhm
+ LEFT | blinky1006
+   UP | freako..
+ LEFT | blinky1004
+ LEFT | blinky1008
+RIGHT | blinky1006
+ LEFT | flyerhm
+RIGHT | freako..
+ DOWN | gabrie..
+ DOWN | presto..
+ DOWN | onlylo..
+ LEFT | gabrie..
+ DOWN | flyerhm
+RIGHT | presto..
+RIGHT | onlylo..
+   UP | blinky1008
+ DOWN | blinky1005
+ DOWN | blinky1005
+ LEFT | blinky1006
+ DOWN | blinky1004
+   UP | freako..
+RIGHT | gabrie..
+RIGHT | blinky1005
+ LEFT | gabrie..
+   UP | onlylo..
+ LEFT | blinky1005
+ DOWN | gabrie..
+RIGHT | onlylo..
+ DOWN | blinky1008
+ LEFT | freako..
+RIGHT | gabrie..
+ DOWN | onlylo..
+ DOWN | blinky1005
+RIGHT | blinky1005
+RIGHT | blinky1008
+ DOWN | freako..
+RIGHT | flyerhm
+   UP | blinky1004
+ LEFT | presto..
+ LEFT | onlylo..
+ DOWN | blinky1005
+   UP | blinky1006
+   UP | flyerhm
+ LEFT | freako..
+RIGHT | presto..
+RIGHT | freako..
+ LEFT | blinky1006
+RIGHT | blinky1005
+ LEFT | gabrie..
+   UP | presto..
+ DOWN | blinky1005
+   UP | freako..
+ DOWN | blinky1004
+RIGHT | blinky1004
+ LEFT | blinky1008
+   UP | blinky1005
+   UP | blinky1004
+   UP | gabrie..
+ DOWN | freako..
+   UP | blinky1008
+ DOWN | blinky1005
+   UP | onlylo..
+ LEFT | freako..
+   UP | freako..
+ DOWN | blinky1008
+RIGHT | blinky1004
+RIGHT | presto..
+RIGHT | gabrie..
+RIGHT | blinky1006
+   UP | blinky1008
+ DOWN | onlylo..
+ LEFT | freako..
+RIGHT | freako..
+RIGHT | blinky1005
+ LEFT | flyerhm
+ DOWN | freako..
+RIGHT | onlylo..
+ LEFT | blinky1008
+ DOWN | blinky1004
+   UP | blinky1005
+RIGHT | blinky1008
+ LEFT | blinky1004
+   UP | blinky1006
+ DOWN | blinky1005
+RIGHT | freako..
+RIGHT | gabrie..
+   UP | blinky1008
+   UP | flyerhm
+ LEFT | freako..
+   UP | blinky1005
+ DOWN | blinky1004
+ LEFT | blinky1006
+RIGHT | freako..
+ LEFT | blinky1005
+RIGHT | blinky1008
+ LEFT | blinky1004
+RIGHT | onlylo..
+ LEFT | freako..
+ DOWN | blinky1005
+   UP | blinky1005
+RIGHT | flyerhm
+ DOWN | onlylo..
+   UP | freako..
+RIGHT | blinky1005
+   UP | onlylo..
+RIGHT | blinky1004
+ LEFT | freako..
+ LEFT | blinky1008
+ DOWN | freako..
+RIGHT | blinky1006
+   UP | blinky1005
+RIGHT | presto..
+ DOWN | gabrie..
+ LEFT | blinky1005
+ DOWN | blinky1004
+RIGHT | onlylo..
+RIGHT | freako..
+ LEFT | freako..
+ LEFT | gabrie..
+   UP | blinky1006
+ DOWN | blinky1008
+   UP | blinky1004
+   UP | flyerhm
+   UP | gabrie..
+ DOWN | presto..
+   UP | blinky1008
+RIGHT | freako..
+RIGHT | presto..
+RIGHT | blinky1005
+   UP | freako..
+ LEFT | onlylo..
+ LEFT | presto..
+   UP | blinky1005
+ DOWN | blinky1004
+RIGHT | onlylo..
+ DOWN | gabrie..
+RIGHT | freako..
+   UP | freako..
+   UP | gabrie..
+   UP | presto..
+ LEFT | flyerhm
+RIGHT | blinky1005
+ DOWN | blinky1008
+RIGHT | flyerhm
+ LEFT | presto..
+ LEFT | gabrie..
+   UP | blinky1008
+ LEFT | blinky1004
+   UP | blinky1005
+ DOWN | freako..
+   UP | presto..
+ DOWN | flyerhm
+ DOWN | gabrie..
+RIGHT | blinky1006
+RIGHT | presto..
+   UP | onlylo..
+RIGHT | blinky1008
+ LEFT | freako..
+RIGHT | flyerhm
+   UP | blinky1006
+   UP | blinky1008
+ DOWN | blinky1005
+RIGHT | freako..
+ DOWN | blinky1006
+ DOWN | onlylo..
+ LEFT | freako..
+RIGHT | blinky1006
+   UP | blinky1005
+ LEFT | blinky1008
+ LEFT | blinky1006
+ DOWN | freako..
+ DOWN | blinky1008
+RIGHT | blinky1006
+   UP | onlylo..
+RIGHT | freako..
+   UP | blinky1004
+ DOWN | gabrie..
+   UP | freako..
+ LEFT | presto..
+ LEFT | onlylo..
+RIGHT | blinky1004
+ DOWN | blinky1005
+ DOWN | freako..
+RIGHT | flyerhm
+ LEFT | blinky1008
+   UP | blinky1005
+   UP | flyerhm
+ LEFT | freako..
+ DOWN | blinky1005
+RIGHT | blinky1008
+ LEFT | blinky1004
+   UP | gabrie..
+   UP | freako..
+   UP | blinky1004
+ LEFT | blinky1006
+ LEFT | freakout..
+RIGHT | blinky1005
+RIGHT | blinky1008
+   UP | freakout..
+ DOWN | blinky1006
+ LEFT | blinky1008
+RIGHT | eminem19..
+RIGHT | blinky1004
+ LEFT | jackson_..
+ LEFT | gabriel1..
+ DOWN | blinky1005
+ LEFT | blinky1004
+ DOWN | jackson_..
+RIGHT | freakout..
+RIGHT | onlylose..
+   UP | preston_..
+   UP | blinky1008
+ DOWN | flyerhm
+   UP | jackson_..
+RIGHT | blinky1005
+ DOWN | freakout..
+   UP | blinky1004
+ LEFT | onlylose..
+RIGHT | jackson_..
+RIGHT | blinky1008
+   UP | blinky1005
+   UP | blinky1006
+RIGHT | blinky1004
+   UP | jackson_..
+   UP | freakout..
+ LEFT | blinky1005
+   UP | flyerhm
+RIGHT | onlylose..
+ LEFT | eminem19..
+ DOWN | flyerhm
+   UP | gabriel1..
+ DOWN | onlylose..
+ DOWN | jackson_..
+ DOWN | blinky1004
+ LEFT | onlylose..
+ DOWN | freakout..
+   UP | flyerhm
+   UP | jackson_..
+ DOWN | blinky1008
+   UP | blinky1005
+   UP | preston_..
+ LEFT | freakout..
+RIGHT | blinky1004
+RIGHT | jackson_..
+ DOWN | blinky1006
+   UP | freakout..
+ LEFT | preston_..
+ DOWN | blinky1005
+RIGHT | blinky1006
+   UP | onlylose..
+ DOWN | freakout..
+   UP | blinky1005
+ LEFT | gabriel1..
+ DOWN | flyerhm
+ LEFT | freakout..
+RIGHT | blinky1008
+   UP | freakout..
+ LEFT | flyerhm
+   UP | blinky1004
+ LEFT | blinky1006
+ DOWN | onlylose..
+ LEFT | freakout..
+ LEFT | jackson_..
+ LEFT | blinky1004
+   UP | jackson_..
+ DOWN | blinky1004
+ DOWN | blinky1006
+RIGHT | jackson_..
+RIGHT | preston_..
+ LEFT | blinky1005
+ DOWN | gabriel1..
+   UP | blinky1006
+RIGHT | freakout..
+   UP | preston_..
+RIGHT | blinky1004
+RIGHT | flyerhm
+ DOWN | jackson_..
+RIGHT | blinky1005
+ LEFT | blinky1008
+ DOWN | blinky1005
+ DOWN | blinky1004
+ LEFT | blinky1006
+ DOWN | freakout..
+RIGHT | blinky1005
+RIGHT | preston_..
+   UP | blinky1004
+ LEFT | flyerhm
+   UP | blinky1005
+   UP | blinky1005
+   UP | preston_..
+ DOWN | blinky1005
+   UP | gabriel1..
+   UP | freakout..
+ DOWN | blinky1004
+ DOWN | flyerhm
+RIGHT | blinky1008
+RIGHT | preston_..
+ DOWN | gabriel1..
+ LEFT | blinky1004
+   UP | onlylose..
+ LEFT | flyerhm
+ DOWN | blinky1006
+   UP | blinky1005
+ LEFT | blinky1005
+RIGHT | blinky1005
+ DOWN | freakout..
+   UP | gabriel1..
+RIGHT | eminem19..
+ LEFT | blinky1006
+ DOWN | blinky1004
+RIGHT | jackson_..
+   UP | blinky1005
+ DOWN | flyerhm
+   UP | freakout..
+ LEFT | blinky1008
+ LEFT | onlylose..
+ DOWN | blinky1005
+RIGHT | blinky1004
+ DOWN | freakout..
+ LEFT | preston_..
+   UP | blinky1005
+ LEFT | blinky1005
+   UP | flyerhm
+   UP | blinky1006
+RIGHT | blinky1005
+RIGHT | freakout..
+RIGHT | gabriel1..
+ LEFT | blinky1006
+ LEFT | blinky1008
+ LEFT | gabriel1..
+ DOWN | blinky1004
+ DOWN | gabriel1..
+ LEFT | flyerhm
+ DOWN | blinky1006
+   UP | blinky1008
+   UP | onlylose..
+   UP | freakout..
+ DOWN | freakout..
+RIGHT | preston_..
+ LEFT | gabriel1..
+ DOWN | jackson_..
+ DOWN | blinky1005
+ LEFT | preston_..
+   UP | flyerhm
+RIGHT | blinky1004
+RIGHT | blinky1006
+ LEFT | onlylose..
+ LEFT | blinky1008
+ LEFT | freakout..
+RIGHT | eminem19..
+ LEFT | jackson_..
+ DOWN | eminem19..
+RIGHT | eminem19..
+ DOWN | blinky1008
+ DOWN | onlylose..
+   UP | jackson_..
+RIGHT | preston_..
+RIGHT | freakout..
+ DOWN | blinky1004
+ DOWN | preston_..
+RIGHT | blinky1005
+   UP | gabriel1..
+   UP | eminem19..
+ LEFT | blinky1004
+   UP | flyerhm
+ LEFT | blinky1008
+ DOWN | blinky1005
+RIGHT | jackson_..
+ DOWN | flyerhm
+   UP | blinky1008
+RIGHT | eminem19..
+RIGHT | blinky1004
+   UP | blinky1006
+RIGHT | freakout..
+RIGHT | onlylose..
+   UP | blinky1005
+ LEFT | blinky1006
+ DOWN | blinky1005
+   UP | blinky1005
+RIGHT | blinky1005
+ LEFT | flyerhm
+   UP | blinky1006
+ LEFT | freakout..
+ LEFT | onlylose..
+ LEFT | preston_..
+RIGHT | eminem19..
+RIGHT | twitchis..
+RIGHT | twitchis..
+RIGHT | eminem19..
+   UP | eminem19..
+ DOWN | hoiyangei
+RIGHT | hoiyangei
+ DOWN | hoiyangei
+RIGHT | hoiyangei
+   UP | hoiyangei
+RIGHT | hoiyangei
+   UP | hoiyangei
+   UP | eminem19..
+RIGHT | hoiyangei
+   UP | hoiyangei
+   UP | eminem19..
+ LEFT | hoiyangei
+   UP | hoiyangei
+ LEFT | hoiyangei
+   UP | hoiyangei
+ LEFT | hoiyangei
+RIGHT | hoiyangei
+   UP | hoiyangei
+RIGHT | eminem19..
+RIGHT | hoiyangei
+   UP | hoiyangei
+RIGHT | hoiyangei
+   UP | hoiyangei
+   UP | eminem19..
+ LEFT | hoiyangei
+   UP | hoiyangei
+   UP | eminem19..
+ LEFT | hoiyangei
+   UP | hoiyangei
+RIGHT | hoiyangei
+ LEFT | eminem19..
+ LEFT | hoiyangei
+ LEFT | eminem19..
+ LEFT | hoiyangei
+ LEFT | eminem19..
+ DOWN | eminem19..
+ DOWN | hoiyangei
