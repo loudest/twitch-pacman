@@ -32,7 +32,9 @@ class file_io_bot(Thread):
             # Write the data we have
             while self.io_buffer.pacman_move_queue:
               f = open(file_path, 'a')
-              f.write(self.io_buffer.pacman_move_queue.pop() + "\n")
+              data = self.io_buffer.pacman_move_queue.pop()
+              data = (data[:18] + '..') if len(data) > 22 else data
+              f.write(data + "\n")
               f.close()
        except:
          print "Exception writing Pac-Man move queue: ", traceback.format_exc()
@@ -52,7 +54,9 @@ class file_io_bot(Thread):
             # Write the data we have
             while self.io_buffer.ghost_move_queue:
               f = open(file_path, 'a')
-              f.write(self.io_buffer.ghost_move_queue.pop() + "\n")
+              data = self.io_buffer.ghost_move_queue.pop()
+              data = (data[:18] + '..') if len(data) > 22 else data
+              f.write(data + "\n")
               f.close()
        except:
          print "Exception writing Ghost move queue: ", traceback.format_exc()
