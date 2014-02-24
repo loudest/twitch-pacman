@@ -1,5 +1,7 @@
-import sys, socket, string, random
+import sys, socket, string, random, logging
 from threading import Thread
+
+UNITS_OF_WORK = 200
 
 HOST="irc.twitch.tv"
 PORT=6667
@@ -25,9 +27,12 @@ class twitch_bot(Thread):
       self.players = players
       self.level = level
       self.textFileBuffer = textFileBuffer
+      self.uow = UNITS_OF_WORK
+      self.logger = logging.getLogger('pacman')
 
-   def connect(self):
+   def run(self):
 
+      self.logger.info("Twitch Bot starting, UOW is " + str(self.uow))
       readbuffer = ""
       irc=socket.socket()
       # Set a timeout of two seconds
@@ -39,7 +44,9 @@ class twitch_bot(Thread):
       irc.send("JOIN %s\r\n" % (CHANNEL_ONE))
       irc.send("JOIN %s\r\n" % (CHANNEL_TWO))
 
-      while self.running:
+      while (self.running and self.uow > 0):
+        self.uow -= 1
+
         try:
            data = irc.recv(1024)
            if data.find('PING') != -1:
@@ -49,19 +56,19 @@ class twitch_bot(Thread):
            if(len(list) >= 4):
               # TODO: Add the nickname of the caller, and write it to file
               # Example - :tonyzipper!tonyzipper@tonyzipper.tmi.twitch.tv PRIVMSG #twitchisblinky :down
-              print "[DATA]", data, "[/DATA]"
+              self.logger.debug("[DATA]" + data + "[/DATA]")
               data = data.split()
               user = data[0][1:data[0].index('!')].strip()
               message_type = data[1].upper().strip()
               channel = data[2].lower().strip()
               command = data[3].lower().strip()
-              print "[MSG_TYPE]", message_type, "[/MSG_TYPE]"
+              self.logger.debug("[MSG_TYPE]" + message_type + "[/MSG_TYPE]")
 
               if(message_type == PRIV_MSG):
                 # Pac-Man
-                print "[CHANNEL]", channel, "[/CHANNEL]"
+                self.logger.debug("[CHANNEL]" + channel + "[/CHANNEL]")
                 if(channel == CHANNEL_ONE):
-                  print user, "Pac-Man", command
+                  self.logger.info(user + " Pac-Man " + command)
                   if (command == ':right'):
                      self.players[0].QueueMove(Directions.RIGHT, self.level)
                      self.textFileBuffer.pacman_move_queue.append("RIGHT | " + user)
@@ -77,7 +84,7 @@ class twitch_bot(Thread):
 
                 # Ghost
                 elif(channel == CHANNEL_TWO):
-                  print user, "Blinky", command
+                  self.logger.info(user + " Blinky " + command)
                   if (command == ':right'):
                      self.players[1].QueueMove(Directions.RIGHT, self.level)
                      self.textFileBuffer.ghost_move_queue.append("RIGHT | " + user)
@@ -92,17 +99,14 @@ class twitch_bot(Thread):
                      self.textFileBuffer.ghost_move_queue.append(" DOWN | " + user)
 
         except socket.timeout:
-          #print 'Socket Timeout - consider lengthing the socket timing'
           pass
         except ValueError:
-          print 'Value error - this is not a Pac-Man command. Passing.'
+          self.logger.error('Value error - this is not a Pac-Man command. Passing.')
         except:
-          print "Unexpected error:", sys.exc_info()[0]
+          self.logger.error("Unexpected error:" + sys.exc_info()[0])
 
-   def run(self):
-      self.connect()
+      self.logger.info("Twitch Bot stopping, UOW is " + str(self.uow))
 
    def stop_running(self):
       self.running = False
-      print "Twitch Bot set to shutdown"
-
+      self.logger.info("Twitch Bot set to shutdown")

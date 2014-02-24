@@ -13,7 +13,7 @@
 # - Added joystick support (configure by changing JS_* constants)
 # - Added a high-score list. Depends on wx for querying the user's name
 
-import pygame, sys, os, random, time
+import pygame, sys, os, random, time, logging
 from pygame.locals import *
 from file_io_bot import file_io_bot
 from twitch_bot import twitch_bot
@@ -21,8 +21,7 @@ from twitch_bot import twitch_bot
 from donation_bot import donation_bot
 from datetime import datetime
 
-# Whether or not to connect to IRC
-SERVER_MODE = True
+# Whether or not to connect to Twitter
 TWITTER_MODE = False
 
 # How long to accept move requests before acting on them, in microseconds
@@ -551,8 +550,6 @@ class move_requests ():
       elif (direction == Directions.UP):
           if not currentLevel.CheckIfHitWall((player.x, player.y - 16), (player.nearestRow, player.nearestCol)):
               self.up += 1
-      else:
-          print "Move", direction, "requested, but not queued as it would be invalid"
 
    # Returns the most highly voted value
    def democracy(self, player, currentLevel):
@@ -575,7 +572,6 @@ class move_requests ():
       else:
         player.velX = 0
         player.velY = 0
-        print "No valid moves voted. Standing still!"
 
       # Clear the votes for next time
       self.reset()
@@ -1427,11 +1423,20 @@ class level ():
         player.anim_pacmanCurrent = player.anim_pacmanS
         player.animFrame = 3
 
+def Shutdown():
+    logger.info("Starting shutdown")
+    for thread in threads:
+      thread.stop_running()
+
+    for thread in threads:
+      thread.join()
+
+    sys.exit(0)
 
 def CheckIfCloseButton(events):
     for event in events: 
         if event.type == QUIT: 
-            sys.exit(0)
+           Shutdown()
 
 def CheckInputs(players, externalInput = None):
     if thisGame.mode == 1:
@@ -1462,7 +1467,7 @@ def CheckInputs(players, externalInput = None):
           players[1].QueueMove(Directions.UP, thisLevel)
                 
     if pygame.key.get_pressed()[ pygame.K_ESCAPE ]:
-        return False
+        Shutdown()
             
     elif thisGame.mode == 3:
         thisGame.StartNewGame()
@@ -1534,6 +1539,25 @@ def GetCrossRef ():
 #      __________________
 # ___/  main code block  \_____________________________________________________
 
+# create logger with 'pacman'
+logger = logging.getLogger('pacman')
+logger.setLevel(logging.DEBUG)
+# create file handler which logs even debug messages
+fh = logging.FileHandler('output/info.log')
+fh.setLevel(logging.INFO)
+# create console handler with a higher log level
+ch = logging.StreamHandler()
+ch.setLevel(logging.ERROR)
+
+# create formatter and add it to the handlers
+formatter = logging.Formatter('%(asctime)s - %(name)s [%(levelname)s] %(message)s')
+fh.setFormatter(formatter)
+ch.setFormatter(formatter)
+
+# add the handlers to the logger
+logger.addHandler(fh)
+logger.addHandler(ch)
+
 # create the pacman
 player = pacman()
 
@@ -1581,11 +1605,11 @@ textFileBuffer = text_file_buffer()
 # 1.) An IRC thread, which polls for input from IRC and uses it to drive actions. It also writes those actions to file.
 # 2.) A Web Scraper, which pulls data from the donations website and writes it to text.
 threads = []
-if(SERVER_MODE == True):
-    #FIXME: This.
-    twitch_thread = twitch_bot(players, thisLevel, textFileBuffer)
-    threads.append(twitch_thread)
-    twitch_thread.start()
+
+# Twitch IRC Thread
+twitch_thread = twitch_bot(players, thisLevel, textFileBuffer)
+threads.append(twitch_thread)
+twitch_thread.start()
 
 # IO Thread
 file_io_thread = file_io_bot(textFileBuffer)
@@ -1598,22 +1622,28 @@ file_io_thread.start()
 #	twitter_thread.start()
 
 
+
 # Start the turn clock
 lastMoveTime = datetime.now()
 
 while True: 
 
     CheckIfCloseButton( pygame.event.get() )
-    
+
+    # Thread Maintenance
+    if not twitch_thread.isAlive():
+      twitch_thread = twitch_bot(players, thisLevel, textFileBuffer)
+      threads[0] = twitch_thread
+      twitch_thread.start()
+
+    if not file_io_thread.isAlive():
+      file_io_thread = file_io_bot(textFileBuffer)
+      threads[1] = file_io_thread
+      file_io_thread.start()
+
     if thisGame.mode == 1:
         # normal gameplay mode
-        if CheckInputs(players) is False:
-          print "Starting shutdown"
-          for thread in threads:
-            thread.stop_running()
-          # Gugh. 
-          time.sleep(2)
-          sys.exit(0)
+        CheckInputs(players)
         
         thisGame.modeTimer += 1
 
@@ -1681,7 +1711,6 @@ while True:
     elif thisGame.mode == 7:
         # flashing maze after finishing level
         thisGame.modeTimer += 1
-        textFileBuffer.pacman_score_queue.append(1)
         
         whiteSet = [10, 30, 50, 70]
         normalSet = [20, 40, 60, 80]
@@ -1702,6 +1731,7 @@ while True:
             thisGame.SetMode ( 8 )
             
     elif thisGame.mode == 8:
+        textFileBuffer.pacman_score_queue.append(thisGame.GetLevelNum())
         # blank screen before changing levels
         thisGame.modeTimer += 1
         if thisGame.modeTimer == 10:
