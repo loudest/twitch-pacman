@@ -13,7 +13,7 @@
 # - Added joystick support (configure by changing JS_* constants)
 # - Added a high-score list. Depends on wx for querying the user's name
 
-import pygame, sys, os, random, time, logging
+import pygame, sys, os, random, time, logging, traceback
 from pygame.locals import *
 from file_io_bot import file_io_bot
 from twitch_bot import twitch_bot

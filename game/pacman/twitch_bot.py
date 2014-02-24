@@ -1,4 +1,4 @@
-import sys, socket, string, random, logging
+import sys, socket, string, random, logging, traceback
 from threading import Thread
 
 UNITS_OF_WORK = 200
@@ -103,7 +103,7 @@ class twitch_bot(Thread):
         except ValueError:
           self.logger.error('Value error - this is not a Pac-Man command. Passing.')
         except:
-          self.logger.error("Unexpected error:" + sys.exc_info()[0])
+          self.logger.error("Unexpected error:" + traceback.format_exc())
 
       self.logger.info("Twitch Bot stopping, UOW is " + str(self.uow))
 
