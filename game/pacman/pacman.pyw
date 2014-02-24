@@ -1424,7 +1424,7 @@ class level ():
         player.animFrame = 3
 
 def Shutdown():
-    logger.info("Starting shutdown")
+    logger.info("PacMan starting shutdown")
     for thread in threads:
       thread.stop_running()
 
@@ -1557,6 +1557,8 @@ ch.setFormatter(formatter)
 # add the handlers to the logger
 logger.addHandler(fh)
 logger.addHandler(ch)
+
+logger.info("Pac-Man starting")
 
 # create the pacman
 player = pacman()
