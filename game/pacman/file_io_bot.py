@@ -33,7 +33,7 @@ class file_io_bot(Thread):
             while self.io_buffer.pacman_move_queue:
               f = open(file_path, 'a')
               data = self.io_buffer.pacman_move_queue.pop()
-              data = (data[:18] + '..') if len(data) > 22 else data
+              data = (data[:14] + '..') if len(data) > 18 else data
               f.write(data + "\n")
               f.close()
        except:
@@ -55,7 +55,7 @@ class file_io_bot(Thread):
             while self.io_buffer.ghost_move_queue:
               f = open(file_path, 'a')
               data = self.io_buffer.ghost_move_queue.pop()
-              data = (data[:18] + '..') if len(data) > 22 else data
+              data = (data[:14] + '..') if len(data) > 18 else data
               f.write(data + "\n")
               f.close()
        except:
