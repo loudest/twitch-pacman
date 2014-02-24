@@ -25,8 +25,8 @@ from datetime import datetime
 SERVER_MODE = True
 TWITTER_MODE = False
 
-# How long to accept move requests before acting on them.
-TURN_DURATION = 0.5
+# How long to accept move requests before acting on them, in microseconds
+TURN_DURATION = 500000
 
 # WIN???
 SCRIPT_PATH=sys.path[0]
@@ -1618,7 +1618,7 @@ while True:
         thisGame.modeTimer += 1
 
         # If it's the start of a new turn, select our moves
-        if ((datetime.now() - lastMoveTime).seconds >= TURN_DURATION):
+        if ((datetime.now() - lastMoveTime).microseconds >= TURN_DURATION):
           # Select our moves
           player.SelectMove(thisLevel)
           for i in range(0, 1, 1):
