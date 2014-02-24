@@ -25,7 +25,7 @@ from datetime import datetime
 TWITTER_MODE = False
 
 # How long to accept move requests before acting on them, in microseconds
-TURN_DURATION = 500000
+TURN_DURATION = 250000
 
 # WIN???
 SCRIPT_PATH=sys.path[0]
@@ -1682,9 +1682,7 @@ while True:
             
             thisGame.lives -= 1
             if thisGame.lives == -1:
-                thisGame.updatehiscores(thisGame.score)
                 thisGame.SetMode( 3 )
-                thisGame.drawmidgamehiscores()
             else:
                 thisGame.SetMode( 4 )
                 
