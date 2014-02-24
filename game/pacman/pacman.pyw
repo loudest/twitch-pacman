@@ -1539,6 +1539,14 @@ def GetCrossRef ():
 #      __________________
 # ___/  main code block  \_____________________________________________________
 
+# Whether or not to shutdown after one game
+shutdownOnEnd = False
+
+# Set variables based on command line arguments
+for arg in sys.argv:
+  if arg == '--once':
+    shutdownOnEnd = True
+
 # create logger with 'pacman'
 logger = logging.getLogger('pacman')
 logger.setLevel(logging.DEBUG)
@@ -1684,6 +1692,8 @@ while True:
         # game over
         CheckInputs(players)
         textFileBuffer.ghost_score_queue.append(1)
+        if shutdownOnEnd:
+          Shutdown()
             
     elif thisGame.mode == 4:
         # waiting to start
