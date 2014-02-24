@@ -107,6 +107,11 @@ class twitch_bot(Thread):
 
       self.logger.info("Twitch Bot stopping, UOW is " + str(self.uow))
 
+      try:
+        irc.close()
+      except:
+        pass
+
    def stop_running(self):
       self.running = False
       self.logger.info("Twitch Bot set to shutdown")
