@@ -13,7 +13,7 @@
 # - Added joystick support (configure by changing JS_* constants)
 # - Added a high-score list. Depends on wx for querying the user's name
 
-import pygame, sys, os, random, time, logging, traceback
+import pygame, sys, os, random, time, logging, traceback, itertools
 from pygame.locals import *
 from file_io_bot import file_io_bot
 from twitch_bot import twitch_bot
@@ -557,21 +557,22 @@ class move_requests ():
         if not currentLevel.CheckIfHitWall((player.x - 16, player.y), (player.nearestRow, player.nearestCol)): 
           player.velX = -player.speed
           player.velY = 0
+          logger.info(player.__class__.__name__ + " velocity set to " + str(player.velX) + "," + str(player.velY) + " (left)")
       elif (self.right >= self.left) and (self.right >= self.up) and (self.right >= self.down) and (self.right > 0):
         if not currentLevel.CheckIfHitWall((player.x + 16, player.y), (player.nearestRow, player.nearestCol)): 
           player.velX = player.speed
           player.velY = 0
+          logger.info(player.__class__.__name__ + " velocity set to " + str(player.velX) + "," + str(player.velY) + " (right)")
       elif (self.up >= self.right) and (self.up >= self.left) and (self.up >= self.down) and (self.up > 0):
         if not currentLevel.CheckIfHitWall((player.x, player.y - 16), (player.nearestRow, player.nearestCol)): 
           player.velX = 0
           player.velY = -player.speed
+          logger.info(player.__class__.__name__ + " velocity set to " + str(player.velX) + "," + str(player.velY) + " (up)")
       elif (self.down >= self.right) and (self.down >= self.up) and (self.down >= self.left) and (self.down > 0):
         if not currentLevel.CheckIfHitWall((player.x, player.y + 16), (player.nearestRow, player.nearestCol)): 
           player.velX = 0
           player.velY = player.speed
-      else:
-        player.velX = 0
-        player.velY = 0
+          logger.info(player.__class__.__name__ + " velocity set to " + str(player.velX) + "," + str(player.velY) + " (down)")
 
       # Clear the votes for next time
       self.reset()
@@ -693,7 +694,7 @@ class ghost ():
         self.move_requests.request_move(self, currentLevel, direction)
             
     def SelectMove(self, currentLevel):
-        if self.PlayerControlled():
+      if (self.PlayerControlled() and (self.velX == 0) and (self.velY == 0)):
           self.move_requests.democracy(self, currentLevel)
 
     def Move (self):
@@ -707,11 +708,12 @@ class ghost ():
               self.y += self.velY
 
               # If we're lined up with the grid.
-              if ((self.x % 16) == 0 and (self.y % 16) == 0):
-                if (self.PlayerControlled()):
+              if (((self.x % 16) == 0) and ((self.y % 16) == 0)):
+                if ((self.velX is not 0) or (self.velY is not 0)):
                   self.velX = 0
                   self.velY = 0
-                elif (self.currentPath):
+                  logger.info("ghost now at " + str(self.x) + "," + str(self.y) + "(Natural Stop)")
+                if (not self.PlayerControlled() and self.currentPath):
                   self.currentPath = self.currentPath[1:]
                   self.FollowNextPathWay()
           
@@ -719,6 +721,7 @@ class ghost ():
               # we're going to hit a wall -- stop moving
               self.velX = 0
               self.velY = 0
+              logger.info("ghost now at " + str(self.x) + "," + str(self.y) + "(Wall Stop)")
 
     def FollowNextPathWay (self):
         
@@ -901,6 +904,7 @@ class pacman ():
         self.move_requests.request_move(self, currentLevel, direction)
 
     def SelectMove(self, currentLevel):
+      if ((self.velX == 0) and (self.velY == 0)):
         self.move_requests.democracy(self, currentLevel)
         
     def Move (self):
@@ -915,9 +919,10 @@ class pacman ():
             self.y += self.velY
 
             # If we're lined up with the grid now, stop
-            if (self.x % 16) == 0 and (self.y % 16) == 0:
+            if (((self.x % 16) == 0) and ((self.y % 16) == 0) and ((self.velX is not 0) or (self.velY is not 0))):
               self.velX = 0
               self.velY = 0
+              logger.info("pacman now at " + str(self.x) + "," + str(self.y) + "(Natural Stop)")
             
             # check for collisions with other tiles (pellets, etc)
             thisLevel.CheckIfHitSomething((self.x, self.y), (self.nearestRow, self.nearestCol))
@@ -963,6 +968,7 @@ class pacman ():
             # we're going to hit a wall -- stop moving
             self.velX = 0
             self.velY = 0
+            logger.info("pacman now at " + str(self.x) + "," + str(self.y) + "(Wall Stop)")
             
         # deal with power-pellet ghost timer
         if thisGame.ghostTimer > 0:
