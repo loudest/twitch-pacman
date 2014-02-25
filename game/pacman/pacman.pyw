@@ -976,7 +976,7 @@ class pacman ():
                 
         # deal with fruit timer
         thisGame.fruitTimer += 1
-        if thisGame.fruitTimer == 500:
+        if thisGame.fruitTimer == 5000:
             pathwayPair = thisLevel.GetPathwayPairPos()
             
             if not pathwayPair == False:
