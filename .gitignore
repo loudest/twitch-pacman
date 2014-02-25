@@ -214,3 +214,12 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+#############
+## TIP Specific
+#############
+
+# Text Files
+ghost_commands.txt
+pacman_commands.txt
+time_countdown.txt
