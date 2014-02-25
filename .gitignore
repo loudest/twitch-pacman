@@ -223,3 +223,6 @@ pip-log.txt
 ghost_commands.txt
 pacman_commands.txt
 time_countdown.txt
+game/pacman/output/ghost_commands.txt
+game/pacman/output/pacman_commands.txt
+game/pacman/output/time_countdown.txt
