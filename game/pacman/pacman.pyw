@@ -1683,6 +1683,7 @@ while True:
             thisGame.lives -= 1
             if thisGame.lives == -1:
                 thisGame.SetMode( 3 )
+                thisGame.drawmidgamehiscores()
             else:
                 thisGame.SetMode( 4 )
                 
@@ -1741,10 +1742,10 @@ while True:
             thisGame.SetMode ( 8 )
             
     elif thisGame.mode == 8:
-        textFileBuffer.pacman_score_queue.append(thisGame.GetLevelNum())
         # blank screen before changing levels
         thisGame.modeTimer += 1
         if thisGame.modeTimer == 10:
+            textFileBuffer.pacman_score_queue.append(thisGame.GetLevelNum())
             thisGame.SetNextLevel()
 
     thisGame.SmartMoveScreen()
