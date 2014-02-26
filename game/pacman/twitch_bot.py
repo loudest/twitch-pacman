@@ -30,6 +30,9 @@ class twitch_bot(Thread):
       self.uow = UNITS_OF_WORK
       self.logger = logging.getLogger('pacman')
 
+   def flush(self):
+     return
+
    def run(self):
 
       self.logger.info("Twitch Bot starting, UOW is " + str(self.uow))

@@ -21,6 +21,9 @@ class twitter_bot(Thread):
 		self.access_token = '2356976360-D8LrSAJ46ZsrCtvS34jFFDbm8GfqdUB4EvhUy4o'
 		self.access_token_secret = 'fpuWA5O53hNHtYF4jgIvJ4uEugwOOcWEAVSEaIuwkztLb'
 
+        def flush(self):
+          return
+
 	def run(self):
 		self.searchTweets()
 

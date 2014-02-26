@@ -1433,6 +1433,7 @@ def Shutdown():
     logger.info("PacMan starting shutdown")
     for thread in threads:
       thread.stop_running()
+      thread.flush()
 
     for thread in threads:
       thread.join()
