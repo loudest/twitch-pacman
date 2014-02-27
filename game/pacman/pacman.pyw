@@ -17,7 +17,7 @@ import pygame, sys, os, random, time, logging, traceback, itertools
 from pygame.locals import *
 from file_io_bot import file_io_bot
 from twitch_bot import twitch_bot
-#from twitter_bot import twitter_bot
+from twitter_bot import twitter_bot
 from donation_bot import donation_bot
 from datetime import datetime
 
@@ -1628,17 +1628,15 @@ twitch_thread = twitch_bot(players, thisLevel, textFileBuffer)
 threads.append(twitch_thread)
 twitch_thread.start()
 
+# Twitter Thread
+twitter_thread = twitter_bot(players, thisLevel, textFileBuffer)
+threads.append(twitter_thread)
+twitter_thread.start()
+
 # IO Thread
 file_io_thread = file_io_bot(textFileBuffer)
 threads.append(file_io_thread)
 file_io_thread.start()
-
-#if(TWITTER_MODE == True):
-#	twitter_thread = twitter_bot(players, thisLevel)
-#	threads.append(twitter_thread)
-#	twitter_thread.start()
-
-
 
 # Start the turn clock
 lastMoveTime = datetime.now()
@@ -1653,10 +1651,16 @@ while True:
       threads[0] = twitch_thread
       twitch_thread.start()
 
+    if not twitter_thread.isAlive():
+      twitter_thread = twitter_bot(players, thisLevel, textFileBuffer)
+      threads[1] = twitter_thread
+      twitter_thread.start()
+
     if not file_io_thread.isAlive():
       file_io_thread = file_io_bot(textFileBuffer)
-      threads[1] = file_io_thread
+      threads[2] = file_io_thread
       file_io_thread.start()
+
 
     if thisGame.mode == 1:
         # normal gameplay mode

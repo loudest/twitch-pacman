@@ -104,7 +104,7 @@ class twitch_bot(Thread):
         except socket.timeout:
           pass
         except ValueError:
-          self.logger.error('Value error - this is not a Pac-Man command. Passing.')
+          self.logger.error('IRC Value error - this is not a Pac-Man command. Passing.')
         except:
           self.logger.error("Unexpected error:" + traceback.format_exc())
 
