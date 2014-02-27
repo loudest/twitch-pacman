@@ -11,6 +11,7 @@ REALNAME="Twitch plays pacman"
 CHANNEL_ONE="#twitchispacman"
 CHANNEL_TWO="#twitchisblinky"
 PRIV_MSG="PRIVMSG"
+TIMEOUT=5
 
 # FIXME: Share this properly
 def enum(**enums):
@@ -38,8 +39,7 @@ class twitch_bot(Thread):
       self.logger.info("Twitch Bot starting, UOW is " + str(self.uow))
       readbuffer = ""
       irc=socket.socket()
-      # Set a timeout of two seconds
-      irc.settimeout(2)
+      irc.settimeout(TIMEOUT)
       irc.connect((HOST, PORT))
       irc.send("PASS oauth:a7k5b9vzxor9d6tzarlia9rjw2c24kn\r\n")
       irc.send("NICK %s\r\n" % NICK)
