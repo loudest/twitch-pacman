@@ -142,18 +142,19 @@ class twitter_bot(Thread):
             self.uow -= 1
 
             self.searchPacmanTweets()
+            self.write_integer(self.api_requests_remaining, "twitter_bot_api_requests_remaining.txt")
             time.sleep(SEARCH_DELAY)
             if not self.running: break
 
             self.searchGhostTweets()
+            self.write_integer(self.api_requests_remaining, "twitter_bot_api_requests_remaining.txt")
             time.sleep(SEARCH_DELAY)
 
             if (datetime.utcnow() - start_time).seconds > WINDOW_DURATION:
               self.api_requests_remaining = REQUESTS_PER_WINDOW
               start_time = datetime.utcnow()
+              self.write_integer(calendar.timegm(start_time.utctimetuple()), "twitter_bot_start_time.txt")
 
-          self.write_integer(calendar.timegm(start_time.utctimetuple()), "twitter_bot_start_time.txt")
-          self.write_integer(self.api_requests_remaining, "twitter_bot_api_requests_remaining.txt")
           self.logger.info("Twitter Bot stopping, UOW is " + str(self.uow))
 
 	def stop_running(self):
